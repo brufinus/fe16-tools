@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% for tool in tools %}
+    <div><p><a href="{{ url_for('meal_finder') }}">{{ tool.name }}</a> - <b>{{ tool.description }}</b></p></div>
+    {% endfor %}
+{% endblock %}
