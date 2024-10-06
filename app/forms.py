@@ -13,4 +13,3 @@ class CharacterForm(FlaskForm):
     char_list = []
     character1 = SelectField('Character 1', choices=[], render_kw={'autofocus': True, 'id': 'dropdown1'})
     character2 = SelectField('Character 2', choices=[], render_kw={'id': 'dropdown2'})
-    # submit = SubmitField('Submit')

@@ -1,6 +1,6 @@
 services:
   fe16-tools:
-    image: fe16-tools
+    image: brufinus/fe16-tools
     build:
       context: .
     container_name: fe16-tools
