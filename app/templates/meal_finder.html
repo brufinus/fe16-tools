@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Meal Finder Tool</title>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
         <p>
@@ -13,22 +19,40 @@
                     {{ form.character2.label }}<br>
                     {{ form.character2 }}
                 </div>
-                <div style="display: inline-block">
-                    {{ form.submit() }}
-                </div>
             </div>
         </p>
         <p>
-            {% if menu | length > 1 and num_chars > 1 %}
-                <p><b>Like these meals:</b></p>
-            {% elif menu | length > 1 and num_chars == 1 %}
-                <p><b>Likes these meals:</b></p>
-            {% elif menu | length == 1 %}
-                <p><b>Like this meal:</b></p>
-            {% endif %}
-            {% for m in menu %}
-                <p>{{ m.meal }}</p>
-            {% endfor %}
+            <div id="info">
+                {% if menu | length > 1 and num_chars > 1 %}
+                    <p><b>Like these meals:</b></p>
+                {% elif menu | length > 1 and num_chars == 1 %}
+                    <p><b>Likes these meals:</b></p>
+                {% elif menu | length == 1 %}
+                    <p><b>Like this meal:</b></p>
+                {% endif %}
+                {% for m in menu %}
+                    <p>{{ m.meal }}</p>
+                {% endfor %}
+            </div>
         </p>
     </form>
+
+    <script>
+        $(document).ready(function() {
+            $('#dropdown1').change(function() {
+                var selected_option = $(this).val();
+                if (selected_option) {
+                    $.ajax({
+                        url: '/get_data',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ selected_option: selected_option }),
+                        success: function(response) {
+                            $('#info').text(response.info);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 {% endblock %}
