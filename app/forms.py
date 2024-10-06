@@ -9,10 +9,6 @@ def get_choices(character):
         char_list.append(tup)
     return char_list
 
-# TODO: Delete me - for DB insertion only
-class InsertForm(FlaskForm):
-    submit = SubmitField('Insert character-meal links')
-
 class CharacterForm(FlaskForm):
     char_list = []
     character1 = SelectField('Character 1', choices=[], render_kw={'autofocus': True})
