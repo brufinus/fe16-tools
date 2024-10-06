@@ -1,7 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% for tool in tools %}
-    <div><p><a href="{{ url_for('meal_finder') }}">{{ tool.name }}</a> - <b>{{ tool.description }}</b></p></div>
-    {% endfor %}
+    <div>
+        <p>A collection of tools for helping with gameplay in Fire Emblem: Three Houses.</p>
+    </div>
+    <div>
+        <h4>Tools:</h4>
+        {% for tool in tools %}
+            <ul>
+                <li><a href="{{ url_for('meal_finder') }}">{{ tool.name }}</a> - <b>{{ tool.description }}</b></li>
+            </ul>
+        {% endfor %}
+    </div>
+    <div>
+        <h4>Links:</h4>
+        <ul>
+            <li><a href="https://github.com/brufinus/fe16-tools" target="_blank" rel="noopener noreferrer">Source code</a></li>
+        </ul>
+    </div>
 {% endblock %}
