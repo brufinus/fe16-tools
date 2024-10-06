@@ -1,0 +1,10 @@
+services:
+  fe16-tools:
+    image: fe16-tools
+    build:
+      context: .
+    container_name: fe16-tools
+    environment:
+      - SECRET_KEY=my-secret-key
+    ports:
+      - "8000:5000"
