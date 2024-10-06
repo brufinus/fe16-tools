@@ -1,7 +1,6 @@
-from enum import unique
-from typing import Optional
 import sqlalchemy as sa
 import sqlalchemy.orm as so
+
 from app import db
 
 liked_meals = sa.Table(

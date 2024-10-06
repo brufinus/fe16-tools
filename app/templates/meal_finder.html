@@ -6,14 +6,24 @@
         <p>
             <div align="left">
                 <div style="display: inline-block">
-                    {{ form.character1.label}}<br>
+                    {{ form.character1.label }}<br>
                     {{ form.character1 }}
                 </div>
                 <div style="display: inline-block">
-                    {{ form.character2.label}}<br>
+                    {{ form.character2.label }}<br>
                     {{ form.character2 }}
                 </div>
+                <div style="display: inline-block">
+                    {{ form.submit() }}
+                </div>
             </div>
+        </p>
+        <p>
+            {% for m in menu %}
+            <p>
+                {{ m.meal }}
+            </p>
+            {% endfor %}
         </p>
     </form>
 {% endblock %}

@@ -1,8 +1,9 @@
-from flask import render_template, flash, redirect, url_for
+from flask import render_template, redirect
+from sqlalchemy import func
+
 from app import app, db
 from app.forms import CharacterForm, InsertForm, get_choices
 from app.models import Character, Menu, liked_meals
-import sqlalchemy as sa
 import yaml
 
 @app.route('/')
@@ -16,14 +17,32 @@ def index():
     ]
     return render_template('index.html', title='Home', page_name='FE16 Tools', tools=tools)
 
-@app.route('/meal-finder', methods=['GET'])
+@app.route('/meal-finder', methods=['GET', 'POST'])
 def meal_finder():
     form = CharacterForm()
     choices = get_choices(Character)
     form.character1.choices = choices
     form.character2.choices = choices
+
+    menu = []
+
+    if form.validate_on_submit():
+        cid1 = form.character1.data
+        cid2 = form.character2.data
+        if cid1 == cid2:
+            db_char = db.session.get(Character, cid1)
+            query = db_char.likes.select()
+            menu = db.session.scalars(query).all()
+        else:
+            menu = db.session.query(Menu).join(liked_meals, Menu.id == liked_meals.c.dish_id) \
+                .filter((liked_meals.c.diner_id == cid1) | (liked_meals.c.diner_id == cid2)) \
+                .group_by(Menu.id) \
+                .having(func.count(liked_meals.c.diner_id) == 2) \
+                .all()
+        redirect('')
+
     return render_template('meal_finder.html', title='Meal Finder',
-                           page_name='Dining Hall Meal Finder', form=form)
+                           page_name='Dining Hall Meal Finder', form=form, menu=menu)
 
 # TODO: Delete me - for DB insertion only
 # @app.route('/insert', methods=['GET', 'POST'])

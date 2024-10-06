@@ -11,9 +11,10 @@ def get_choices(character):
 
 # TODO: Delete me - for DB insertion only
 class InsertForm(FlaskForm):
-    submit = SubmitField('Insert character-meal link')
+    submit = SubmitField('Insert character-meal links')
 
 class CharacterForm(FlaskForm):
     char_list = []
     character1 = SelectField('Character 1', choices=[], render_kw={'autofocus': True})
     character2 = SelectField('Character 2', choices=[])
+    submit = SubmitField('Submit')
