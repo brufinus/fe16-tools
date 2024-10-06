@@ -1,7 +1,7 @@
 # fe16-tools
 
 A python web application with various tools to
-assist in a Fire Emblem: Three Houses playthrough.
+assist in a Fire Emblem: Three Houses play-through.
 
 The app currently has only one tool, but I
 plan to implement more if the need arises.
@@ -13,7 +13,8 @@ Current tools:
 
 You can build and run the app locally through docker.
 
-A dockerized image can be pulled from the docker hub and run like so:
+A [dockerized image](https://hub.docker.com/r/brufinus/fe16-tools)
+can be pulled from the docker hub and run like so:
 
 ```bash
 docker run --name fe16-tools -p 5000:5000 --rm docker.io/brufinus/fe16-tools:latest
