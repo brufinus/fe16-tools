@@ -24,6 +24,7 @@ def meal_finder():
     form.character2.choices = choices
 
     menu = []
+    num_chars = 1
 
     if form.validate_on_submit():
         cid1 = form.character1.data
@@ -38,7 +39,8 @@ def meal_finder():
                 .group_by(Menu.id) \
                 .having(func.count(liked_meals.c.diner_id) == 2) \
                 .all()
+            num_chars = 2
         redirect('')
 
     return render_template('meal_finder.html', title='Meal Finder',
-                           page_name='Dining Hall Meal Finder', form=form, menu=menu)
+                           page_name='Dining Hall Meal Finder', form=form, menu=menu, num_chars=num_chars)

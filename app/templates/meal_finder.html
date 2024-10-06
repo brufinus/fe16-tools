@@ -19,10 +19,15 @@
             </div>
         </p>
         <p>
+            {% if menu | length > 1 and num_chars > 1 %}
+                <p><b>Like these meals:</b></p>
+            {% elif menu | length > 1 and num_chars == 1 %}
+                <p><b>Likes these meals:</b></p>
+            {% elif menu | length == 1 %}
+                <p><b>Like this meal:</b></p>
+            {% endif %}
             {% for m in menu %}
-            <p>
-                {{ m.meal }}
-            </p>
+                <p>{{ m.meal }}</p>
             {% endfor %}
         </p>
     </form>
