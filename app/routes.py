@@ -2,7 +2,7 @@ from flask import render_template, redirect, request, jsonify
 from sqlalchemy import func
 
 from app import app, db
-from app.forms import CharacterForm, get_choices
+from app.forms import CharacterForm, DualCharacterForm, get_choices
 from app.models import Character, Menu, liked_meals
 
 @app.route('/')
@@ -11,14 +11,20 @@ def index():
     tools = [
         {
             'name': 'Meal Finder',
-            'description': 'Find shared liked meals between two characters.'
+            'description': 'Find shared liked meals between characters.',
+            'id': 'meal_finder'
+        },
+        {
+            'name': 'Tea Helper',
+            'description': 'Get favorite teas, liked topics, and correct responses.',
+            'id': 'tea_helper'
         }
     ]
     return render_template('index.html', title='Home', page_name='FE16 Tools', tools=tools)
 
 @app.route('/meal-finder', methods=['GET', 'POST'])
 def meal_finder():
-    form = CharacterForm()
+    form = DualCharacterForm()
     choices = get_choices(Character)
     form.character1.choices = choices
     form.character2.choices = choices
@@ -52,3 +58,14 @@ def get_data():
     return jsonify({'meals': meals_data,
                     'meals_count': meals_count,
                     'num_chars': num_chars})
+
+@app.route('/tea-helper', methods=['GET', 'POST'])
+def tea_helper():
+    form = CharacterForm()
+    choices = get_choices(Character)
+    form.character.choices = choices
+
+    redirect('')
+
+    return render_template('tea_helper.html', title='Tea Helper',
+                           page_name='Tea Party Helper', form=form)

@@ -8,7 +8,7 @@
         <h4>Tools:</h4>
         {% for tool in tools %}
             <ul>
-                <li><a href="{{ url_for('meal_finder') }}">{{ tool.name }}</a> - <b>{{ tool.description }}</b></li>
+                <li><a href="{{ url_for(tool.id) }}">{{ tool.name }}</a> - <b>{{ tool.description }}</b></li>
             </ul>
         {% endfor %}
     </div>
