@@ -1,7 +1,7 @@
 # fe16-tools
 
 A python web application with various tools to
-assist in a Fire Emblem: Three Houses play-through.
+help with gameplay in Fire Emblem: Three Houses
 
 The app currently has only one tool, but I
 plan to implement more if the need arises.

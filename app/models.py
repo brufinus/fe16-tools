@@ -10,12 +10,20 @@ liked_meals = sa.Table(
     sa.Column('dish_id', sa.Integer, sa.ForeignKey('menu.id'), primary_key=True)
 )
 
+liked_teas = sa.Table(
+    'liked_teas',
+    db.metadata,
+    sa.Column('character_id', sa.Integer, sa.ForeignKey('character.id'), primary_key=True),
+    sa.Column('tea_id', sa.Integer, sa.ForeignKey('tea.id'), primary_key=True)
+)
+
 class Character(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     name: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True)
     nickname: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True, nullable=True)
 
     likes: so.WriteOnlyMapped['Menu'] = so.relationship(secondary=liked_meals, back_populates='liked')
+    likes_tea: so.WriteOnlyMapped['Tea'] = so.relationship(secondary=liked_teas, back_populates='liked_tea')
 
     def __repr__(self):
         return '<Character {}>'.format(self.name)
@@ -28,3 +36,12 @@ class Menu(db.Model):
 
     def __repr__(self):
         return '<Menu {}>'.format(self.meal)
+
+class Tea(db.Model):
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    name: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True)
+
+    liked_tea: so.WriteOnlyMapped['Character'] = so.relationship(secondary=liked_teas, back_populates='likes_tea')
+
+    def __repr__(self):
+        return '<Tea {}>'.format(self.name)
