@@ -3,7 +3,7 @@ from sqlalchemy import func
 
 from app import app, db
 from app.forms import CharacterForm, DualCharacterForm, get_choices
-from app.models import Character, Menu, liked_meals, Tea, liked_teas
+from app.models import Character, Menu, liked_meals, Tea, liked_teas, TeaTopic
 
 
 @app.route('/')
@@ -74,13 +74,19 @@ def tea_helper():
 @app.route('/get_tea_data', methods=['POST'])
 def get_tea_data():
     cid = int(request.json['selected_option'])
-
     char = db.session.get(Character, cid)
+
     query = char.likes_tea.select()
     tea = db.session.scalars(query).all()
 
     tea_data = [{'tea': t.name} for t in tea]
     tea_count = len(tea)
 
+    query = char.likes_tea_topic.select().order_by(TeaTopic.data)
+    topics = db.session.scalars(query).all()
+
+    topic_data = [{'topic': t.data} for t in topics]
+
     return jsonify({'tea': tea_data,
-                    'tea_count': tea_count})
+                    'tea_count': tea_count,
+                    'topics': topic_data})

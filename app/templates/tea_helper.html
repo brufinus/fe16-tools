@@ -14,7 +14,10 @@
             {{ form.character }}
         </div>
     </div>
-    <div id="info">
+    <div id="tea_info">
+        <!-- Tea info updates here -->
+    </div>
+    <div id="topic_info">
         <!-- Tea info updates here -->
     </div>
 </form>
@@ -30,7 +33,8 @@
                     selected_option: selectedOption
                 }),
                 success: function(response) {
-                    $('#info').empty();
+                    $('#tea_info').empty();
+                    $('#topic_info').empty();
 
                     var teaCount = response.tea_count;
                     var prefixMessage = '';
@@ -42,10 +46,14 @@
                         prefixMessage = 'Favorite tea:';
                     }
 
-                    $('#info').append('<p><b>' + prefixMessage + '</b></p>');
-
+                    $('#tea_info').append('<p><b>' + prefixMessage + '</b></p>');
                     response.tea.forEach(function(tea) {
-                        $('#info').append('<p>' + tea.tea + '</p>');
+                        $('#tea_info').append('<p>' + tea.tea + '</p>');
+                    });
+
+                    $('#topic_info').append('<p><b>Interested topics:</b></p>');
+                    response.topics.forEach(function(topics) {
+                        $('#topic_info').append('<p>' + topics.topic + '</p>');
                     });
                 },
                 error: function(error) {
