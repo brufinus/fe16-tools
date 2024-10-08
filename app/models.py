@@ -33,6 +33,8 @@ class Character(db.Model):
     likes_tea: so.WriteOnlyMapped['Tea'] = so.relationship(secondary=liked_teas, back_populates='liked_tea')
     likes_tea_topic: so.WriteOnlyMapped['TeaTopic'] = so.relationship(secondary=liked_tea_topics,
                                                                       back_populates='liked_tea_topic')
+    final_tea_comment: so.Mapped[list['TeaFinalTopic']] = so.relationship("TeaFinalTopic",
+                                                                          back_populates="commenter")
 
     def __repr__(self):
         return '<Character {}>'.format(self.name)
@@ -64,3 +66,12 @@ class TeaTopic(db.Model):
 
     def __repr__(self):
         return '<TeaTopic {}>'.format(self.data)
+
+class TeaFinalTopic(db.Model):
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    comment: so.Mapped[str] = so.mapped_column(sa.String(160), index=True, unique=True)
+    response: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True)
+
+    character_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('character.id'))
+
+    commenter: so.Mapped["Character"] = so.relationship("Character", back_populates="final_tea_comment")
