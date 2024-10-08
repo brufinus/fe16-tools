@@ -6,6 +6,19 @@
     <title>Tea Helper Tool</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+<style>
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+    }
+    .topic-item {
+        background-color: #f1f1f1;
+        padding: 10px
+        border-radius: 5px;
+        text-align: center;
+    }
+</style>
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
     <div align="left">
@@ -17,8 +30,9 @@
     <div id="tea_info">
         <!-- Tea info updates here -->
     </div>
-    <div id="topic_info">
-        <!-- Tea info updates here -->
+    <p><b>Interested topics:</b></p>
+    <div id="topic_info" class="grid-container">
+        <!-- Topic info updates here -->
     </div>
 </form>
 <script>
@@ -51,9 +65,8 @@
                         $('#tea_info').append('<p>' + tea.tea + '</p>');
                     });
 
-                    $('#topic_info').append('<p><b>Interested topics:</b></p>');
                     response.topics.forEach(function(topics) {
-                        $('#topic_info').append('<p>' + topics.topic + '</p>');
+                        $('#topic_info').append('<div class="topic-item">' + topics.topic + '</div>');
                     });
                 },
                 error: function(error) {
