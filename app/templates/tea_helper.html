@@ -7,16 +7,24 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <style>
-    .grid-container {
+    .topic-grid-container {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(4, 250px);
         gap: 10px;
     }
-    .topic-item {
+    .comment-grid-container{
+        display: grid;
+        grid-template-columns: minmax(100px, auto) minmax(50px, auto);
+        gap: 10px;
+        max-width: 1200px;
+        width: 100%;
+    }
+    .topic-item, .comment-item, .answer-item {
         background-color: #f1f1f1;
-        padding: 10px
+        padding: 5px;
         border-radius: 5px;
-        text-align: center;
+        text-align: left;
+        word-wrap: break-word;
     }
 </style>
 <form action="" method="post" novalidate>
@@ -31,8 +39,12 @@
         <!-- Tea info updates here -->
     </div>
     <p><b>Interested topics:</b></p>
-    <div id="topic_info" class="grid-container">
+    <div id="topic_info" class="topic-grid-container">
         <!-- Topic info updates here -->
+    </div>
+    <p><b>Final topics:</b></p>
+    <div id="final_topic_info">
+        <!-- Final topic info updates here -->
     </div>
 </form>
 <script>
@@ -49,6 +61,7 @@
                 success: function(response) {
                     $('#tea_info').empty();
                     $('#topic_info').empty();
+                    $('#final_topic_info').empty();
 
                     var teaCount = response.tea_count;
                     var prefixMessage = '';
@@ -68,6 +81,16 @@
                     response.topics.forEach(function(topics) {
                         $('#topic_info').append('<div class="topic-item">' + topics.topic + '</div>');
                     });
+
+                    var gridContainer = $('<div>').addClass('comment-grid-container');
+                    response.comments.forEach(function(c, index) {
+                        var a = response.answers[index];
+                        var commentDiv = $('<div>').addClass('comment-item').text(c.comment);
+                        var answerDiv = $('<div>').addClass('answer-item').text(a.answer);
+                        gridContainer.append(commentDiv);
+                        gridContainer.append(answerDiv);
+                    });
+                    $('#final_topic_info').append(gridContainer);
                 },
                 error: function(error) {
                     console.log("Error:", error);

@@ -78,15 +78,22 @@ def get_tea_data():
 
     query = char.likes_tea.select()
     tea = db.session.scalars(query).all()
-
     tea_data = [{'tea': t.name} for t in tea]
     tea_count = len(tea)
 
     query = char.likes_tea_topic.select().order_by(TeaTopic.data)
     topics = db.session.scalars(query).all()
-
     topic_data = [{'topic': t.data} for t in topics]
+
+    final_topics = sorted(char.final_tea_comment, key=lambda final_topic: final_topic.comment)
+    comment_data = []
+    answer_data = []
+    for topic in final_topics:
+        comment_data.append({'comment': topic.comment})
+        answer_data.append({'answer': topic.response})
 
     return jsonify({'tea': tea_data,
                     'tea_count': tea_count,
-                    'topics': topic_data})
+                    'topics': topic_data,
+                    'comments': comment_data,
+                    'answers': answer_data})
