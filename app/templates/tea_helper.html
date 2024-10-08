@@ -14,5 +14,49 @@
             {{ form.character }}
         </div>
     </div>
+    <div id="info">
+        <!-- Tea info updates here -->
+    </div>
 </form>
+<script>
+    $(document).ready(function() {
+        function updateInfo() {
+            var selectedOption = $('#dropdown').val();
+            $.ajax({
+                url: '/get_tea_data',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    selected_option: selectedOption
+                }),
+                success: function(response) {
+                    $('#info').empty();
+
+                    var teaCount = response.tea_count;
+                    var prefixMessage = '';
+
+                    if (teaCount > 1) {
+                        prefixMessage = 'Favorite teas:';
+                    }
+                    else {
+                        prefixMessage = 'Favorite tea:';
+                    }
+
+                    $('#info').append('<p><b>' + prefixMessage + '</b></p>');
+
+                    response.tea.forEach(function(tea) {
+                        $('#info').append('<p>' + tea.tea + '</p>');
+                    });
+                },
+                error: function(error) {
+                    console.log("Error:", error);
+                }
+            });
+        }
+
+        $('#dropdown').change(function() {
+            updateInfo();
+        });
+    });
+</script>
 {% endblock %}
