@@ -1,9 +1,9 @@
 from flask import render_template, redirect, request, jsonify
 from sqlalchemy import func
-
 from app import app, db
-from app.forms import CharacterForm, DualCharacterForm, get_choices
-from app.models import Character, Menu, liked_meals, Tea, liked_teas, TeaTopic
+from app.forms import CharacterForm, DualCharacterForm, get_choices, ItemForm
+from app.models import Character, Menu, liked_meals, TeaTopic, LostItem, Gift, liked_gifts
+import sqlalchemy as sa
 
 
 @app.route('/')
@@ -19,6 +19,11 @@ def index():
             'name': 'Tea Helper',
             'description': 'Get favorite teas, liked topics, and correct responses.',
             'id': 'tea_helper'
+        },
+        {
+            'name': 'Item Helper',
+            'description': 'Help return lost items and deliver liked gifts.',
+            'id': 'item_helper'
         }
     ]
 
@@ -101,3 +106,30 @@ def get_tea_data():
                     'topics': topic_data,
                     'comments': comment_data,
                     'answers': answer_data})
+
+@app.route('/item-helper', methods=['GET', 'POST'])
+def item_helper():
+    form = ItemForm()
+    lost_item_choices = get_choices(LostItem)
+    character_choices = get_choices(Character)
+    form.lost_item.choices = lost_item_choices
+    form.character.choices = character_choices
+
+    redirect('')
+
+    return render_template('item_helper.html', title='Item Helper', page_name='Item Helper', form=form)
+
+@app.route('/get_item_data', methods=['POST'])
+def get_item_data():
+    lid = int(request.json['lost_item_selected_option'])
+    lost_item = db.session.get(LostItem, lid)
+    character = lost_item.owner.name
+    character_data = [{'character': character}]
+
+    cid = int(request.json['character_selected_option'])
+    query = sa.select(Gift).join(liked_gifts).where(liked_gifts.c.character_id == cid)
+    gifts = db.session.scalars(query).all()
+    gift_data = [{'name': gift.name} for gift in gifts]
+
+    return jsonify({'character': character_data,
+                    'gifts': gift_data})
