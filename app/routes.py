@@ -17,6 +17,11 @@ def index():
             'name': 'Tea Helper',
             'description': 'Get favorite teas, liked topics, and correct responses.',
             'id': 'tea_helper'
+        },
+        {
+            'name': 'Item Helper',
+            'description': 'Help return lost items.',
+            'id': 'item_helper'
         }
     ]
 
@@ -99,3 +104,13 @@ def get_tea_data():
                     'topics': topic_data,
                     'comments': comment_data,
                     'answers': answer_data})
+
+@app.route('/item-helper', methods=['GET', 'POST'])
+def item_helper():
+    form = CharacterForm()
+    choices = get_choices(Character)
+    form.character.choices = choices
+
+    redirect('')
+
+    return render_template('item_helper.html', title='Item Helper', page_name='Item Helper', form=form)
