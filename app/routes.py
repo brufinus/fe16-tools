@@ -22,7 +22,7 @@ def index():
         }
     ]
 
-    if request.host == 'https://fe16-tools-33427842621.us-central1.run.app':
+    if request.host == 'fe16-tools-33427842621.us-central1.run.app':
         return redirect('https://fe16-tools.web.app', code=301)
 
     return render_template('index.html', title='Home', page_name='FE16 Tools', tools=tools)
