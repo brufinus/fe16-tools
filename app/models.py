@@ -35,6 +35,7 @@ class Character(db.Model):
                                                                       back_populates='liked_tea_topic')
     final_tea_comment: so.Mapped[list['TeaFinalTopic']] = so.relationship("TeaFinalTopic",
                                                                           back_populates="commenter")
+    lost_items: so.Mapped[list['TeaFinalTopic']] = so.relationship("LostItem", back_populates="owner")
 
     def __repr__(self):
         return '<Character {}>'.format(self.name)
@@ -75,3 +76,17 @@ class TeaFinalTopic(db.Model):
     character_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('character.id'))
 
     commenter: so.Mapped["Character"] = so.relationship("Character", back_populates="final_tea_comment")
+
+    def __repr__(self):
+        return '<TeaFinalTopic {}>'.format(self.comment)
+
+class LostItem(db.Model):
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    name: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True)
+
+    character_id: so.Mapped[int] = so.mapped_column(sa.ForeignKey('character.id'))
+
+    owner: so.Mapped["Character"] = so.relationship("Character", back_populates="lost_items")
+
+    def __repr__(self):
+        return '<LostItem {}>'.format(self.name)
