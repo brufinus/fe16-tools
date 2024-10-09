@@ -24,6 +24,13 @@ liked_tea_topics = sa.Table(
     sa.Column('topic_id', sa.Integer, sa.ForeignKey('tea_topic.id'), primary_key=True)
 )
 
+liked_gifts = sa.Table(
+    'liked_gifts',
+    db.metadata,
+    sa.Column('character_id', sa.Integer, sa.ForeignKey('character.id'), primary_key=True),
+    sa.Column('gift_id', sa.Integer, sa.ForeignKey('gift.id'), primary_key=True)
+)
+
 class Character(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     name: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True)
@@ -36,6 +43,7 @@ class Character(db.Model):
     final_tea_comment: so.Mapped[list['TeaFinalTopic']] = so.relationship("TeaFinalTopic",
                                                                           back_populates="commenter")
     lost_items: so.Mapped[list['TeaFinalTopic']] = so.relationship("LostItem", back_populates="owner")
+    likes_gift: so.Mapped['Gift'] = so.relationship(secondary=liked_gifts, back_populates='liked_by')
 
     def __repr__(self):
         return '<Character {}>'.format(self.name)
@@ -90,3 +98,12 @@ class LostItem(db.Model):
 
     def __repr__(self):
         return '<LostItem {}>'.format(self.name)
+
+class Gift(db.Model):
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    name: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True)
+
+    liked_by: so.Mapped['Character'] = so.relationship(secondary=liked_gifts, back_populates='likes_gift')
+
+    def __repr__(self):
+        return '<Gift {}>'.format(self.name)
