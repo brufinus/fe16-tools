@@ -1,8 +1,9 @@
 from flask import render_template, redirect, request, jsonify
 from sqlalchemy import func
 from app import app, db
-from app.forms import CharacterForm, DualCharacterForm, get_choices
-from app.models import Character, Menu, liked_meals, TeaTopic
+from app.forms import CharacterForm, DualCharacterForm, get_choices, LostItemForm
+from app.models import Character, Menu, liked_meals, TeaTopic, LostItem
+
 
 @app.route('/')
 @app.route('/index')
@@ -107,10 +108,20 @@ def get_tea_data():
 
 @app.route('/item-helper', methods=['GET', 'POST'])
 def item_helper():
-    form = CharacterForm()
-    choices = get_choices(Character)
-    form.character.choices = choices
+    form = LostItemForm()
+    choices = get_choices(LostItem)
+    form.lost_item.choices = choices
 
     redirect('')
 
     return render_template('item_helper.html', title='Item Helper', page_name='Item Helper', form=form)
+
+@app.route('/get_item_data', methods=['POST'])
+def get_item_data():
+    liid = int(request.json['selected_option'])
+    lost_item = db.session.get(LostItem, liid)
+
+    character = lost_item.owner.name
+    character_data = [{'character': character}]
+
+    return jsonify({'character': character_data})
