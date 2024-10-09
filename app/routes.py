@@ -2,8 +2,9 @@ from flask import render_template, redirect, request, jsonify
 from sqlalchemy import func
 
 from app import app, db
-from app.forms import CharacterForm, get_choices
-from app.models import Character, Menu, liked_meals
+from app.forms import CharacterForm, DualCharacterForm, get_choices
+from app.models import Character, Menu, liked_meals, Tea, liked_teas, TeaTopic
+
 
 @app.route('/')
 @app.route('/index')
@@ -11,14 +12,20 @@ def index():
     tools = [
         {
             'name': 'Meal Finder',
-            'description': 'Find shared liked meals between two characters.'
+            'description': 'Find shared liked meals between characters.',
+            'id': 'meal_finder'
+        },
+        {
+            'name': 'Tea Helper',
+            'description': 'Get favorite teas, liked topics, and correct responses.',
+            'id': 'tea_helper'
         }
     ]
     return render_template('index.html', title='Home', page_name='FE16 Tools', tools=tools)
 
 @app.route('/meal-finder', methods=['GET', 'POST'])
 def meal_finder():
-    form = CharacterForm()
+    form = DualCharacterForm()
     choices = get_choices(Character)
     form.character1.choices = choices
     form.character2.choices = choices
@@ -28,8 +35,8 @@ def meal_finder():
     return render_template('meal_finder.html', title='Meal Finder',
                            page_name='Dining Hall Meal Finder', form=form)
 
-@app.route('/get_data', methods=['POST'])
-def get_data():
+@app.route('/get_meal_data', methods=['POST'])
+def get_meal_data():
     cid1 = int(request.json['selected_option1'])
     cid2 = int(request.json['selected_option2'])
 
@@ -52,3 +59,41 @@ def get_data():
     return jsonify({'meals': meals_data,
                     'meals_count': meals_count,
                     'num_chars': num_chars})
+
+@app.route('/tea-helper', methods=['GET', 'POST'])
+def tea_helper():
+    form = CharacterForm()
+    choices = get_choices(Character)
+    form.character.choices = choices
+
+    redirect('')
+
+    return render_template('tea_helper.html', title='Tea Helper',
+                           page_name='Tea Party Helper', form=form)
+
+@app.route('/get_tea_data', methods=['POST'])
+def get_tea_data():
+    cid = int(request.json['selected_option'])
+    char = db.session.get(Character, cid)
+
+    query = char.likes_tea.select()
+    tea = db.session.scalars(query).all()
+    tea_data = [{'tea': t.name} for t in tea]
+    tea_count = len(tea)
+
+    query = char.likes_tea_topic.select().order_by(TeaTopic.data)
+    topics = db.session.scalars(query).all()
+    topic_data = [{'topic': t.data} for t in topics]
+
+    final_topics = sorted(char.final_tea_comment, key=lambda final_topic: final_topic.comment)
+    comment_data = []
+    answer_data = []
+    for topic in final_topics:
+        comment_data.append({'comment': topic.comment})
+        answer_data.append({'answer': topic.response})
+
+    return jsonify({'tea': tea_data,
+                    'tea_count': tea_count,
+                    'topics': topic_data,
+                    'comments': comment_data,
+                    'answers': answer_data})
