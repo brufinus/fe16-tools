@@ -1,13 +1,13 @@
 from flask_wtf import FlaskForm
 from wtforms import SelectField, SubmitField
 
-def get_choices(character):
-    char_list = []
-    chars = character.query.order_by(character.name.asc()).all()
-    for char in chars:
-        tup = (char.id, char.name)
-        char_list.append(tup)
-    return char_list
+def get_choices(table):
+    result_list = []
+    rows = table.query.order_by(table.name.asc()).all()
+    for row in rows:
+        tup = (row.id, row.name)
+        result_list.append(tup)
+    return result_list
 
 class DualCharacterForm(FlaskForm):
     char_list = []
