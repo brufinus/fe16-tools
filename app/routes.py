@@ -1,8 +1,9 @@
 from flask import render_template, redirect, request, jsonify
 from sqlalchemy import func
 from app import app, db
-from app.forms import CharacterForm, DualCharacterForm, get_choices, LostItemForm
-from app.models import Character, Menu, liked_meals, TeaTopic, LostItem
+from app.forms import CharacterForm, DualCharacterForm, get_choices, ItemForm
+from app.models import Character, Menu, liked_meals, TeaTopic, LostItem, Gift, liked_gifts
+import sqlalchemy as sa
 
 
 @app.route('/')
@@ -21,7 +22,7 @@ def index():
         },
         {
             'name': 'Item Helper',
-            'description': 'Help return lost items.',
+            'description': 'Help return lost items and deliver liked gifts.',
             'id': 'item_helper'
         }
     ]
@@ -108,9 +109,11 @@ def get_tea_data():
 
 @app.route('/item-helper', methods=['GET', 'POST'])
 def item_helper():
-    form = LostItemForm()
-    choices = get_choices(LostItem)
-    form.lost_item.choices = choices
+    form = ItemForm()
+    lost_item_choices = get_choices(LostItem)
+    character_choices = get_choices(Character)
+    form.lost_item.choices = lost_item_choices
+    form.character.choices = character_choices
 
     redirect('')
 
@@ -118,10 +121,15 @@ def item_helper():
 
 @app.route('/get_item_data', methods=['POST'])
 def get_item_data():
-    liid = int(request.json['selected_option'])
-    lost_item = db.session.get(LostItem, liid)
-
+    lid = int(request.json['lost_item_selected_option'])
+    lost_item = db.session.get(LostItem, lid)
     character = lost_item.owner.name
     character_data = [{'character': character}]
 
-    return jsonify({'character': character_data})
+    cid = int(request.json['character_selected_option'])
+    query = sa.select(Gift).join(liked_gifts).where(liked_gifts.c.character_id == cid)
+    gifts = db.session.scalars(query).all()
+    gift_data = [{'name': gift.name} for gift in gifts]
+
+    return jsonify({'character': character_data,
+                    'gifts': gift_data})

@@ -16,5 +16,6 @@ class DualCharacterForm(FlaskForm):
 class CharacterForm(FlaskForm):
     character = SelectField('Character', choices=[], render_kw={'autofocus': True, 'id': 'dropdown'})
 
-class LostItemForm(FlaskForm):
-    lost_item = SelectField('Lost item', choices=[], render_kw={'autofocus': True, 'id': 'lost_item_dropdown'})
+class ItemForm(FlaskForm):
+    lost_item = SelectField('Item', choices=[], render_kw={'autofocus': True, 'id': 'lost_item_dropdown'})
+    character = SelectField('Character', choices=[], render_kw={'id': 'character_dropdown'})

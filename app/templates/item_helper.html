@@ -8,6 +8,7 @@
 </head>
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
+    <h3>Lost Items</h3>
     <div align="left">
         <div style="display: inline-block">
             {{ form.lost_item.label }}:
@@ -19,26 +20,44 @@
             <!-- Lost item info updates here -->
         </div>
     </p>
+    <h3>Liked Gifts</h3>
+    <div align="left">
+        <div style="display: inline-block">
+            {{ form.character.label }}:
+            {{ form.character }}
+        </div>
+    </div>
+    <p>
+        <div id="liked_gift_info">
+            <!-- Liked gift info updates here -->
+        </div>
+    </p>
 </form>
 <script>
     $(document).ready(function() {
         function updateInfo() {
-            var selectedOption = $('#lost_item_dropdown').val();
+            var lostItemSelectedOption = $('#lost_item_dropdown').val();
+            var characterSelectedOption = $('#character_dropdown').val();
             $.ajax({
                 url: '/get_item_data',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    selected_option: selectedOption
+                    lost_item_selected_option: lostItemSelectedOption,
+                    character_selected_option: characterSelectedOption
                 }),
                 success: function(response) {
                     $('#lost_item_info').empty();
+                    $('#liked_gift_info').empty();
 
                     $('#lost_item_info').append('Owner: ');
                     response.character.forEach(function(character) {
                         $('#lost_item_info').append(character.character);
                     });
 
+                    response.gifts.forEach(function(gift) {
+                        $('#liked_gift_info').append('<p>' + gift.name + '</p>');
+                    });
                 },
                 error: function(error) {
                     console.log("Error:", error);
@@ -46,7 +65,7 @@
             });
         }
 
-        $('#lost_item_dropdown').change(function() {
+        $('#lost_item_dropdown, #character_dropdown').change(function() {
             updateInfo();
         });
 
