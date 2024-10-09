@@ -1,10 +1,8 @@
 from flask import render_template, redirect, request, jsonify
 from sqlalchemy import func
-
 from app import app, db
 from app.forms import CharacterForm, DualCharacterForm, get_choices
-from app.models import Character, Menu, liked_meals, Tea, liked_teas, TeaTopic
-
+from app.models import Character, Menu, liked_meals, TeaTopic
 
 @app.route('/')
 @app.route('/index')
