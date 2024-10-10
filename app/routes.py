@@ -1,8 +1,8 @@
 from flask import render_template, redirect, request, jsonify
 from sqlalchemy import func
 from app import app, db
-from app.forms import CharacterForm, DualCharacterForm, get_choices, ItemForm
-from app.models import Character, Menu, liked_meals, TeaTopic, LostItem, Gift, liked_gifts
+from app.forms import CharacterForm, DualCharacterForm, get_choices, ItemForm, SeedForm
+from app.models import Character, Menu, liked_meals, TeaTopic, LostItem, Gift, liked_gifts, Seed
 import sqlalchemy as sa
 
 
@@ -24,6 +24,11 @@ def index():
             'name': 'Item Helper',
             'description': 'Help return lost items and deliver liked gifts.',
             'id': 'item_helper'
+        },
+        {
+            'name': 'Seed Calculator',
+            'description': 'Simulate seed item yields.',
+            'id': 'seed_calculator'
         }
     ]
 
@@ -133,3 +138,20 @@ def get_item_data():
 
     return jsonify({'character': character_data,
                     'gifts': gift_data})
+
+@app.route('/seed-calculator', methods=['GET', 'POST'])
+def seed_calculator():
+    form = SeedForm()
+    seed_choices = get_choices(Seed)
+    form.seed.choices = seed_choices
+    redirect('')
+
+    return render_template('seed_calculator.html', title='Seed Calc',
+                           page_name='Seed Yield Calculator', form=form)
+
+@app.route('/get_seed_data', methods=['POST'])
+def get_seed_data():
+    sid = int(request.json['seed_selected_option'])
+    seed = db.session.get(Seed, sid)
+
+    return jsonify()

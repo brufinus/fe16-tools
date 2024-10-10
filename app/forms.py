@@ -19,3 +19,6 @@ class CharacterForm(FlaskForm):
 class ItemForm(FlaskForm):
     lost_item = SelectField('Item', choices=[], render_kw={'autofocus': True, 'id': 'lost_item_dropdown'})
     character = SelectField('Character', choices=[], render_kw={'id': 'character_dropdown'})
+
+class SeedForm(FlaskForm):
+    seed = SelectField('Seed', choices=[], render_kw={'autofocus': True, 'id': 'seed_dropdown'})

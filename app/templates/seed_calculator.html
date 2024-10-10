@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Helper Tool</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<form action="" method="post" novalidate>
+    {{ form.hidden_tag() }}
+    <div align="left">
+        <div style="display: inline-block">
+            {{ form.seed.label }}:
+            {{ form.seed }}
+        </div>
+    </div>
+    <p>
+        <div id="info">
+            <!-- Info updates here -->
+        </div>
+    </p>
+</form>
+<script>
+    $(document).ready(function() {
+        function updateInfo() {
+            var seedSelectedOption = $('#seed_dropdown').val();
+            $.ajax({
+                url: '/get_seed_data',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    seed_selected_option: seedSelectedOption,
+                }),
+                success: function(response) {
+                    $('#info').empty();
+
+                },
+                error: function(error) {
+                    console.log("Error:", error);
+                }
+            });
+        }
+
+        $('#seed_dropdown').change(function() {
+            updateInfo();
+        });
+
+        updateInfo();
+    });
+</script>
+{% endblock %}
