@@ -1,9 +1,12 @@
 from flask_wtf import FlaskForm
 from wtforms import SelectField, SubmitField
 
-def get_choices(table):
+def get_choices(table, sort):
     result_list = []
-    rows = table.query.order_by(table.name.asc()).all()
+    if sort:
+        rows = table.query.order_by(table.name.asc()).all()
+    else:
+        rows = table.query.all()
     for row in rows:
         tup = (row.id, row.name)
         result_list.append(tup)
