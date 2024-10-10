@@ -40,7 +40,7 @@ def index():
 @app.route('/meal-finder', methods=['GET', 'POST'])
 def meal_finder():
     form = DualCharacterForm()
-    choices = get_choices(Character)
+    choices = get_choices(Character, True)
     form.character1.choices = choices
     form.character2.choices = choices
 
@@ -77,7 +77,7 @@ def get_meal_data():
 @app.route('/tea-helper', methods=['GET', 'POST'])
 def tea_helper():
     form = CharacterForm()
-    choices = get_choices(Character)
+    choices = get_choices(Character, True)
     form.character.choices = choices
 
     redirect('')
@@ -115,8 +115,8 @@ def get_tea_data():
 @app.route('/item-helper', methods=['GET', 'POST'])
 def item_helper():
     form = ItemForm()
-    lost_item_choices = get_choices(LostItem)
-    character_choices = get_choices(Character)
+    lost_item_choices = get_choices(LostItem, True)
+    character_choices = get_choices(Character, True)
     form.lost_item.choices = lost_item_choices
     form.character.choices = character_choices
 
@@ -143,7 +143,7 @@ def get_item_data():
 def seed_calculator():
     form = SeedForm()
     seed_choices = [(-1, '')]
-    seed_choices.extend(get_choices(Seed))
+    seed_choices.extend(get_choices(Seed, False))
     seed_choices = [(sid, name.removesuffix(" Seeds")) for sid, name in seed_choices]
     form.seed1.choices = seed_choices
     form.seed2.choices = seed_choices
@@ -157,7 +157,7 @@ def seed_calculator():
 
 @app.route('/get_seed_data', methods=['POST'])
 def get_seed_data():
-    sid = int(request.json['seed1_selected_option'])
-    seed = db.session.get(Seed, sid)
+    sids = [int(request.json[f'seed{i}_selected_option']) for i in range(1, 6)]
+    seeds = db.session.query(Seed).filter(Seed.id.in_(sids)).all()
 
     return jsonify()
