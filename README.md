@@ -3,11 +3,10 @@
 A python web-based application with various tools to
 help with gameplay in Fire Emblem: Three Houses
 
-The app currently has only one tool, but I
-plan to implement more if the need arises.
-
 Current tools:
 - **Meal Finder**: Find shared liked meals between two characters.
+- **Tea Helper**: Get favorite teas, liked topics, and correct responses.
+- **Item Helper**: Help return lost items and deliver liked gifts.
 
 # Usage
 
