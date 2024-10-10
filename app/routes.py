@@ -142,8 +142,14 @@ def get_item_data():
 @app.route('/seed-calculator', methods=['GET', 'POST'])
 def seed_calculator():
     form = SeedForm()
-    seed_choices = get_choices(Seed)
-    form.seed.choices = seed_choices
+    seed_choices = [(-1, '')]
+    seed_choices.extend(get_choices(Seed))
+    seed_choices = [(sid, name.removesuffix(" Seeds")) for sid, name in seed_choices]
+    form.seed1.choices = seed_choices
+    form.seed2.choices = seed_choices
+    form.seed3.choices = seed_choices
+    form.seed4.choices = seed_choices
+    form.seed5.choices = seed_choices
     redirect('')
 
     return render_template('seed_calculator.html', title='Seed Calc',
@@ -151,7 +157,7 @@ def seed_calculator():
 
 @app.route('/get_seed_data', methods=['POST'])
 def get_seed_data():
-    sid = int(request.json['seed_selected_option'])
+    sid = int(request.json['seed1_selected_option'])
     seed = db.session.get(Seed, sid)
 
     return jsonify()

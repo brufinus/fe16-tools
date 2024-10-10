@@ -10,8 +10,32 @@
     {{ form.hidden_tag() }}
     <div align="left">
         <div style="display: inline-block">
-            {{ form.seed.label }}:
-            {{ form.seed }}
+            {{ form.seed1.label }}:
+            {{ form.seed1 }}
+        </div>
+    </div>
+    <div align="left">
+        <div style="display: inline-block">
+            {{ form.seed2.label }}:
+            {{ form.seed2 }}
+        </div>
+    </div>
+    <div align="left">
+        <div style="display: inline-block">
+            {{ form.seed3.label }}:
+            {{ form.seed3 }}
+        </div>
+    </div>
+    <div align="left">
+        <div style="display: inline-block">
+            {{ form.seed4.label }}:
+            {{ form.seed4 }}
+        </div>
+    </div>
+    <div align="left">
+        <div style="display: inline-block">
+            {{ form.seed5.label }}:
+            {{ form.seed5 }}
         </div>
     </div>
     <p>
@@ -23,13 +47,21 @@
 <script>
     $(document).ready(function() {
         function updateInfo() {
-            var seedSelectedOption = $('#seed_dropdown').val();
+            var seed1SelectedOption = $('#seed1_dropdown').val();
+            var seed2SelectedOption = $('#seed2_dropdown').val();
+            var seed3SelectedOption = $('#seed3_dropdown').val();
+            var seed4SelectedOption = $('#seed4_dropdown').val();
+            var seed5SelectedOption = $('#seed5_dropdown').val();
             $.ajax({
                 url: '/get_seed_data',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({
-                    seed_selected_option: seedSelectedOption,
+                    seed1_selected_option: seed1SelectedOption,
+                    seed2_selected_option: seed1SelectedOption,
+                    seed3_selected_option: seed1SelectedOption,
+                    seed4_selected_option: seed1SelectedOption,
+                    seed5_selected_option: seed1SelectedOption
                 }),
                 success: function(response) {
                     $('#info').empty();
@@ -41,7 +73,7 @@
             });
         }
 
-        $('#seed_dropdown').change(function() {
+        $('#seed1_dropdown, #seed2_dropdown, #seed3_dropdown, #seed4_dropdown, #seed5_dropdown').change(function() {
             updateInfo();
         });
 

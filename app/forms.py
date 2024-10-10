@@ -21,4 +21,8 @@ class ItemForm(FlaskForm):
     character = SelectField('Character', choices=[], render_kw={'id': 'character_dropdown'})
 
 class SeedForm(FlaskForm):
-    seed = SelectField('Seed', choices=[], render_kw={'autofocus': True, 'id': 'seed_dropdown'})
+    seed1 = SelectField('Seed 1', choices=[], render_kw={'autofocus': True, 'id': 'seed1_dropdown'})
+    seed2 = SelectField('Seed 2', choices=[], render_kw={'autofocus': True, 'id': 'seed2_dropdown'})
+    seed3 = SelectField('Seed 3', choices=[], render_kw={'autofocus': True, 'id': 'seed3_dropdown'})
+    seed4 = SelectField('Seed 4', choices=[], render_kw={'autofocus': True, 'id': 'seed4_dropdown'})
+    seed5 = SelectField('Seed 5', choices=[], render_kw={'autofocus': True, 'id': 'seed5_dropdown'})
