@@ -56,6 +56,4 @@ You can access the app online at
 If you run into any problems or wish for certain
 features or improvements, please open an Issue.
 
-The project is also open to contribution through PR, though I honestly
-don't know if I set the project up correctly for that so if not let me know.
-
+The project is also open to contribution through PR.
