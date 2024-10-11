@@ -28,7 +28,7 @@ def index():
         },
         {
             'name': 'Seed Scorer',
-            'description': 'Simulate possible seed scores.',
+            'description': 'Calculate seed scores.',
             'id': 'seed_calculator'
         }
     ]
