@@ -7,6 +7,7 @@ Current tools:
 - **Meal Finder**: Find shared liked meals between two characters.
 - **Tea Helper**: Get favorite teas, liked topics, and correct responses.
 - **Item Helper**: Help return lost items and deliver liked gifts.
+- **Seed Scorer**: Calculate seed scores.
 
 # Usage
 
