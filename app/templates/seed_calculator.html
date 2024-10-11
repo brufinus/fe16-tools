@@ -14,28 +14,45 @@
             {{ form.seed1 }}
         </div>
     </div>
+    <br>
     <div align="left">
         <div style="display: inline-block">
             {{ form.seed2.label }}:
             {{ form.seed2 }}
         </div>
     </div>
+    <br>
     <div align="left">
         <div style="display: inline-block">
             {{ form.seed3.label }}:
             {{ form.seed3 }}
         </div>
     </div>
+    <br>
     <div align="left">
         <div style="display: inline-block">
             {{ form.seed4.label }}:
             {{ form.seed4 }}
         </div>
     </div>
+    <br>
     <div align="left">
         <div style="display: inline-block">
             {{ form.seed5.label }}:
             {{ form.seed5 }}
+        </div>
+    </div>
+    <br>
+    <div align="left">
+        <div style="display: inline-block">
+            {{ form.cultivation.label }}:
+            {{ form.cultivation }}
+        </div>
+    </div>
+    <br>
+    <div align="left">
+        <div style="display: inline-block">
+            {{ form.clear_all }}
         </div>
     </div>
     <p>
@@ -52,6 +69,7 @@
             var seed3SelectedOption = $('#seed3_dropdown').val();
             var seed4SelectedOption = $('#seed4_dropdown').val();
             var seed5SelectedOption = $('#seed5_dropdown').val();
+            var cultivationSelectedOption = $('#cultivation_dropdown').val();
             $.ajax({
                 url: '/get_seed_data',
                 type: 'POST',
@@ -61,11 +79,14 @@
                     seed2_selected_option: seed2SelectedOption,
                     seed3_selected_option: seed3SelectedOption,
                     seed4_selected_option: seed4SelectedOption,
-                    seed5_selected_option: seed5SelectedOption
+                    seed5_selected_option: seed5SelectedOption,
+                    cultivation_selected_option: cultivationSelectedOption
                 }),
                 success: function(response) {
                     $('#info').empty();
 
+                    $('#info').append('<b>Score</b>: ')
+                    $('#info').append(response)
                 },
                 error: function(error) {
                     console.log("Error:", error);
@@ -73,7 +94,7 @@
             });
         }
 
-        $('#seed1_dropdown, #seed2_dropdown, #seed3_dropdown, #seed4_dropdown, #seed5_dropdown').change(function() {
+        $('#seed1_dropdown, #seed2_dropdown, #seed3_dropdown, #seed4_dropdown, #seed5_dropdown, #cultivation_dropdown').change(function() {
             updateInfo();
         });
 

@@ -1,3 +1,4 @@
+from math import floor
 from flask import render_template, redirect, request, jsonify
 from sqlalchemy import func
 from app import app, db
@@ -27,7 +28,7 @@ def index():
         },
         {
             'name': 'Seed Calculator',
-            'description': 'Simulate seed item yields.',
+            'description': 'Simulate seed item scores.',
             'id': 'seed_calculator'
         }
     ]
@@ -43,8 +44,6 @@ def meal_finder():
     choices = get_choices(Character, True)
     form.character1.choices = choices
     form.character2.choices = choices
-
-    redirect('')
 
     return render_template('meal_finder.html', title='Meal Finder',
                            page_name='Dining Hall Meal Finder', form=form)
@@ -79,8 +78,6 @@ def tea_helper():
     form = CharacterForm()
     choices = get_choices(Character, True)
     form.character.choices = choices
-
-    redirect('')
 
     return render_template('tea_helper.html', title='Tea Helper',
                            page_name='Tea Party Helper', form=form)
@@ -120,8 +117,6 @@ def item_helper():
     form.lost_item.choices = lost_item_choices
     form.character.choices = character_choices
 
-    redirect('')
-
     return render_template('item_helper.html', title='Item Helper', page_name='Item Helper', form=form)
 
 @app.route('/get_item_data', methods=['POST'])
@@ -150,14 +145,32 @@ def seed_calculator():
     form.seed3.choices = seed_choices
     form.seed4.choices = seed_choices
     form.seed5.choices = seed_choices
-    redirect('')
+
+    if form.validate_on_submit():
+        return redirect('')
 
     return render_template('seed_calculator.html', title='Seed Calc',
-                           page_name='Seed Yield Calculator', form=form)
+                           page_name='Seed Score Calculator', form=form)
 
 @app.route('/get_seed_data', methods=['POST'])
 def get_seed_data():
     sids = [int(request.json[f'seed{i}_selected_option']) for i in range(1, 6)]
-    seeds = db.session.query(Seed).filter(Seed.id.in_(sids)).all()
+    unique_seeds = db.session.query(Seed).filter(Seed.id.in_(sids)).all()
+    seed_map = {seed.id: seed for seed in unique_seeds}
+    seeds = [seed_map[sid] for sid in sids if sid != -1]
+    cultivation = int(request.json['cultivation_selected_option'])
 
-    return jsonify()
+    rank, grade = 0, 0
+    for seed in seeds:
+        rank += seed.rank
+        grade += seed.grade
+
+    x = (12 - (rank % 12)) * 5
+    y = floor((grade / 5) * 4)
+    z = (cultivation + 4) * 2
+    score = x + y + z
+
+    if not seeds:
+        return '0'
+
+    return str(score)
