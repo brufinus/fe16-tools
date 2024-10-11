@@ -25,12 +25,12 @@ jobs:
         run: |
           echo ${{ steps.semantic.outputs.new_release_version }}
           docker build -t brufinus/fe16-tools .
-          docker tag brufinus/fe16-tools brufinus/fe16-tools:${{ steps.semantic.outputs.new_release_version }}
+          docker tag brufinus/fe16-tools brufinus/fe16-tools:v${{ steps.semantic.outputs.new_release_version }}
 
       - name: Push Docker image to Docker Hub
         if: steps.semantic.outputs.new_release_published == 'true'
         run: |
           echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u brufinus --password-stdin
           docker push brufinus/fe16-tools
-          docker push brufinus/fe16-tools:${{ steps.semantic.outputs.new_release_version }}
+          docker push brufinus/fe16-tools:v${{ steps.semantic.outputs.new_release_version }}
 
