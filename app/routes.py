@@ -1,8 +1,9 @@
+from math import floor
 from flask import render_template, redirect, request, jsonify
 from sqlalchemy import func
 from app import app, db
-from app.forms import CharacterForm, DualCharacterForm, get_choices, ItemForm
-from app.models import Character, Menu, liked_meals, TeaTopic, LostItem, Gift, liked_gifts
+from app.forms import CharacterForm, DualCharacterForm, get_choices, ItemForm, SeedForm
+from app.models import Character, Menu, liked_meals, TeaTopic, LostItem, Gift, liked_gifts, Seed
 import sqlalchemy as sa
 
 
@@ -24,6 +25,11 @@ def index():
             'name': 'Item Helper',
             'description': 'Help return lost items and deliver liked gifts.',
             'id': 'item_helper'
+        },
+        {
+            'name': 'Seed Scorer',
+            'description': 'Calculate seed scores.',
+            'id': 'seed_calculator'
         }
     ]
 
@@ -35,11 +41,9 @@ def index():
 @app.route('/meal-finder', methods=['GET', 'POST'])
 def meal_finder():
     form = DualCharacterForm()
-    choices = get_choices(Character)
+    choices = get_choices(Character, True)
     form.character1.choices = choices
     form.character2.choices = choices
-
-    redirect('')
 
     return render_template('meal_finder.html', title='Meal Finder',
                            page_name='Dining Hall Meal Finder', form=form)
@@ -72,10 +76,8 @@ def get_meal_data():
 @app.route('/tea-helper', methods=['GET', 'POST'])
 def tea_helper():
     form = CharacterForm()
-    choices = get_choices(Character)
+    choices = get_choices(Character, True)
     form.character.choices = choices
-
-    redirect('')
 
     return render_template('tea_helper.html', title='Tea Helper',
                            page_name='Tea Party Helper', form=form)
@@ -110,12 +112,10 @@ def get_tea_data():
 @app.route('/item-helper', methods=['GET', 'POST'])
 def item_helper():
     form = ItemForm()
-    lost_item_choices = get_choices(LostItem)
-    character_choices = get_choices(Character)
+    lost_item_choices = get_choices(LostItem, True)
+    character_choices = get_choices(Character, True)
     form.lost_item.choices = lost_item_choices
     form.character.choices = character_choices
-
-    redirect('')
 
     return render_template('item_helper.html', title='Item Helper', page_name='Item Helper', form=form)
 
@@ -133,3 +133,44 @@ def get_item_data():
 
     return jsonify({'character': character_data,
                     'gifts': gift_data})
+
+@app.route('/seed-calculator', methods=['GET', 'POST'])
+def seed_calculator():
+    form = SeedForm()
+    seed_choices = [(-1, '')]
+    seed_choices.extend(get_choices(Seed, False))
+    seed_choices = [(sid, name.removesuffix(" Seeds")) for sid, name in seed_choices]
+    form.seed1.choices = seed_choices
+    form.seed2.choices = seed_choices
+    form.seed3.choices = seed_choices
+    form.seed4.choices = seed_choices
+    form.seed5.choices = seed_choices
+
+    if form.validate_on_submit():
+        return redirect('')
+
+    return render_template('seed_calculator.html', title='Seed Scorer',
+                           page_name='Seed Score Calculator', form=form)
+
+@app.route('/get_seed_data', methods=['POST'])
+def get_seed_data():
+    sids = [int(request.json[f'seed{i}_selected_option']) for i in range(1, 6)]
+    unique_seeds = db.session.query(Seed).filter(Seed.id.in_(sids)).all()
+    seed_map = {seed.id: seed for seed in unique_seeds}
+    seeds = [seed_map[sid] for sid in sids if sid != -1]
+    cultivation = int(request.json['cultivation_selected_option'])
+
+    rank, grade = 0, 0
+    for seed in seeds:
+        rank += seed.rank
+        grade += seed.grade
+
+    x = (12 - (rank % 12)) * 5
+    y = floor((grade / 5) * 4)
+    z = (cultivation + 4) * 2
+    score = x + y + z
+
+    if not seeds:
+        return '0'
+
+    return str(score)
