@@ -27,8 +27,8 @@ def index():
             'id': 'item_helper'
         },
         {
-            'name': 'Seed Calculator',
-            'description': 'Simulate seed item scores.',
+            'name': 'Seed Scorer',
+            'description': 'Simulate possible seed scores.',
             'id': 'seed_calculator'
         }
     ]
@@ -149,7 +149,7 @@ def seed_calculator():
     if form.validate_on_submit():
         return redirect('')
 
-    return render_template('seed_calculator.html', title='Seed Calc',
+    return render_template('seed_calculator.html', title='Seed Scorer',
                            page_name='Seed Score Calculator', form=form)
 
 @app.route('/get_seed_data', methods=['POST'])
