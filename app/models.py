@@ -111,6 +111,7 @@ class Gift(db.Model):
 class Seed(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     name: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True)
+    grade: so.Mapped[int] = so.mapped_column(sa.Integer, nullable=True)
     rank: so.Mapped[int] = so.mapped_column(sa.Integer)
 
     def __repr__(self):
