@@ -28,9 +28,9 @@ def index():
             'id': 'item_helper'
         },
         {
-            'name': 'Seed Calculator',
-            'description': 'Simulate seed combinations at the Greenhouse.',
-            'id': 'seed_calculator'
+            'name': 'Seed Simulator',
+            'description': 'Simulate Greenhouse seed combinations.',
+            'id': 'seed_simulator'
         }
     ]
 
@@ -135,8 +135,8 @@ def get_item_data():
     return jsonify({'character': character_data,
                     'gifts': gift_data})
 
-@app.route('/seed-calculator', methods=['GET', 'POST'])
-def seed_calculator():
+@app.route('/seed-simulator', methods=['GET', 'POST'])
+def seed_simulator():
     form = SeedForm()
     seed_choices = [(-1, '')]
     seed_choices.extend(get_choices(Seed, False))
@@ -150,8 +150,8 @@ def seed_calculator():
     if form.validate_on_submit():
         return redirect('')
 
-    return render_template('seed_calculator.html', title='Seed Calc',
-                           page_name='Seed Calculator', form=form)
+    return render_template('seed_simulator.html', title='Seed Sim',
+                           page_name='Seed Simulator', form=form)
 
 @app.route('/get_seed_data', methods=['POST'])
 def get_seed_data():
