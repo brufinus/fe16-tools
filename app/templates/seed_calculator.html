@@ -61,7 +61,7 @@
         </div>
     </p>
     <p>
-        What do you do with this score?<br>
+        What do you do with these numbers?<br>
         Read more about the Greenhouse at
         <a href="https://serenesforest.net/three-houses/monastery/greenhouse/"
            target="_blank" rel="noopener noreferrer">Serenes Forest.</a>
@@ -92,7 +92,13 @@
                     $('#info').empty();
 
                     $('#info').append('<b>Score</b>: ')
-                    $('#info').append(response)
+                    $('#info').append(response.score)
+                    $('#info').append('<br><b>Yield</b>: ')
+                    $('#info').append(response.yield)
+                    $('#info').append('<br><b>Low-high ratio</b>: ')
+                    $('#info').append(response.ratio)
+                    $('#info').append('<br><b>Coefficient</b>: ')
+                    $('#info').append(response.coefficient)
                 },
                 error: function(error) {
                     console.log("Error:", error);

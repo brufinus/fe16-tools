@@ -2,7 +2,7 @@ from math import floor
 from flask import render_template, redirect, request, jsonify
 from sqlalchemy import func
 from app import app, db
-from app.forms import CharacterForm, DualCharacterForm, get_choices, ItemForm, SeedForm
+from app.forms import CharacterForm, DualCharacterForm, get_choices, ItemForm, SeedForm, get_yield_ratios
 from app.models import Character, Menu, liked_meals, TeaTopic, LostItem, Gift, liked_gifts, Seed
 import sqlalchemy as sa
 
@@ -27,8 +27,8 @@ def index():
             'id': 'item_helper'
         },
         {
-            'name': 'Seed Scorer',
-            'description': 'Calculate seed scores.',
+            'name': 'Seed Calculator',
+            'description': 'Simulate seed combinations at the Greenhouse.',
             'id': 'seed_calculator'
         }
     ]
@@ -149,8 +149,8 @@ def seed_calculator():
     if form.validate_on_submit():
         return redirect('')
 
-    return render_template('seed_calculator.html', title='Seed Scorer',
-                           page_name='Seed Score Calculator', form=form)
+    return render_template('seed_calculator.html', title='Seed Calc',
+                           page_name='Seed Calculator', form=form)
 
 @app.route('/get_seed_data', methods=['POST'])
 def get_seed_data():
@@ -165,12 +165,17 @@ def get_seed_data():
         rank += seed.rank
         grade += seed.grade
 
-    x = (12 - (rank % 12)) * 5
-    y = floor((grade / 5) * 4)
-    z = (cultivation + 4) * 2
-    score = x + y + z
-
     if not seeds:
-        return '0'
+        score = 0
+    else:
+        x = (12 - (rank % 12)) * 5
+        y = floor((grade / 5) * 4)
+        z = (cultivation + 4) * 2
+        score = x + y + z
 
-    return str(score)
+    yld, ratio, coefficient = get_yield_ratios(score)
+
+    return jsonify({'score': str(score),
+                    'yield': str(yld),
+                    'ratio': ratio,
+                    'coefficient': str(coefficient)})
