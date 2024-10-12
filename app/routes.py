@@ -2,8 +2,9 @@ from math import floor
 from flask import render_template, redirect, request, jsonify
 from sqlalchemy import func
 from app import app, db
-from app.forms import CharacterForm, DualCharacterForm, get_choices, ItemForm, SeedForm, get_yield_ratios
+from app.forms import CharacterForm, DualCharacterForm, ItemForm, SeedForm
 from app.models import Character, Menu, liked_meals, TeaTopic, LostItem, Gift, liked_gifts, Seed
+from app.utility import get_choices, get_yield_ratios
 import sqlalchemy as sa
 
 
