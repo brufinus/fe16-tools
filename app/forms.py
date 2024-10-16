@@ -1,5 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import SelectField, SubmitField
+from wtforms.fields.simple import StringField
+from wtforms.validators import DataRequired
+
 
 class DualCharacterForm(FlaskForm):
     character1 = SelectField('Character 1', choices=[], render_kw={'autofocus': True, 'id': 'dropdown1'})
@@ -24,3 +27,6 @@ class SeedForm(FlaskForm):
     cultivation = SelectField('Cultivation', choices=c_methods, render_kw={'id': 'cultivation_dropdown'})
 
     clear_all = SubmitField('Clear all')
+
+class LectureForm(FlaskForm):
+    question_query = StringField('Press Enter to clear.', validators=[DataRequired()], id='search-bar')

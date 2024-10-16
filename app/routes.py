@@ -2,8 +2,8 @@ from math import floor
 from flask import render_template, redirect, request, jsonify
 from sqlalchemy import func
 from app import app, db
-from app.forms import CharacterForm, DualCharacterForm, ItemForm, SeedForm
-from app.models import Character, Menu, liked_meals, TeaTopic, LostItem, Gift, liked_gifts, Seed
+from app.forms import CharacterForm, DualCharacterForm, ItemForm, SeedForm, LectureForm
+from app.models import Character, Menu, liked_meals, TeaTopic, LostItem, Gift, liked_gifts, Seed, LectureQuestion
 from app.utility import get_choices, get_yield_ratios
 import sqlalchemy as sa
 
@@ -31,6 +31,11 @@ def index():
             'name': 'Seed Simulator',
             'description': 'Simulate Greenhouse seed combinations.',
             'id': 'seed_simulator'
+        },
+        {
+            'name': 'Lecture Assistant',
+            'description': 'Get the correct answer to the monthly lecture question.',
+            'id': 'lecture_assistant'
         }
     ]
 
@@ -180,3 +185,19 @@ def get_seed_data():
                     'yield': str(yld),
                     'ratio': ratio,
                     'coefficient': str(coefficient)})
+
+@app.route('/lecture-assistant', methods=['GET'])
+def lecture_assistant():
+    form = LectureForm()
+
+    return render_template('lecture_assistant.html', title='Lecture Assist',
+                           page_name='Lecture Assistant', form=form)
+
+@app.route('/get_lecture_data', methods=['POST'])
+def get_lecture_data():
+    query = request.json.get('q', '')
+    if query:
+        results = LectureQuestion.query.filter(LectureQuestion.question.ilike(f'%{query}%')).all()
+        data = [{'id': q.id, 'question': q.question, 'answer': q.answer} for q in results]
+        return jsonify({'data': data})
+    return jsonify({'data': []})
