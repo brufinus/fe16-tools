@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import SelectField, SubmitField
 from wtforms.fields.simple import StringField
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Length
 
 
 class DualCharacterForm(FlaskForm):
@@ -29,4 +29,5 @@ class SeedForm(FlaskForm):
     clear_all = SubmitField('Clear all')
 
 class LectureForm(FlaskForm):
-    question_query = StringField('Press Enter to clear.', validators=[DataRequired()], id='search-bar')
+    question_query = StringField('Press Enter to clear.', validators=[DataRequired(), Length(max=250)],
+                                 id='search-bar')
