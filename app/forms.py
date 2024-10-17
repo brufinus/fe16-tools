@@ -29,5 +29,5 @@ class SeedForm(FlaskForm):
     clear_all = SubmitField('Clear all')
 
 class LectureForm(FlaskForm):
-    question_query = StringField('Press Enter to clear.', validators=[DataRequired(), Length(max=250)],
+    question_query = StringField('Press Enter to clear.', validators=[DataRequired(), Length(max=25)],
                                  id='search-bar')
