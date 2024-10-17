@@ -34,7 +34,7 @@ def index():
         },
         {
             'name': 'Lecture Assistant',
-            'description': 'Get the correct answer to the monthly lecture question.',
+            'description': 'Get answers to the monthly lecture questions.',
             'id': 'lecture_assistant'
         }
     ]
