@@ -1,5 +1,3 @@
-from enum import unique
-
 import sqlalchemy as sa
 import sqlalchemy.orm as so
 
