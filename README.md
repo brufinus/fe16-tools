@@ -8,6 +8,7 @@ Current tools:
 - **Tea Helper**: Get favorite teas, liked topics, and correct responses.
 - **Item Helper**: Help return lost items and deliver liked gifts.
 - **Seed Simulator**: Simulate Greenhouse seed combinations.
+- **Lecture Assistant**: Correctly answer the monthly lecture question.
 
 # Usage
 
