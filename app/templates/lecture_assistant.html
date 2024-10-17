@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Helper Tool</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<form action="" method="post" autocomplete="off" novalidate>
+    {{ form.hidden_tag() }}
+    <div align="left">
+        <div style="display: inline-block">
+            Start typing a question to update results.
+            <br>
+            {{ form.question_query.label }}
+            <br>
+            {{ form.question_query }}
+        </div>
+    </div>
+    <p>
+        <div id="info">
+            <!-- Info updates here -->
+        </div>
+    </p>
+</form>
+<script>
+    $(document).ready(function() {
+        $('#search-bar').on('keypress', function(event) {
+            if (event.which === 13) {
+                event.preventDefault();
+                $('#search-bar').val('');
+                $('#info').empty();
+            }
+        });
+        $('#search-bar').on('input', function() {
+            const query = $(this).val();
+            if (query.length > 0) {
+                $.ajax({
+                    url: '/get_lecture_data',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ q: query }),
+                    success: function(response) {
+                        const results = response.data;
+                        $('#info').empty();
+                        if (results.length > 0) {
+                            results.forEach(result => {
+                                $('#info').append('<p>' + result.question + '<ul><li style="color:DodgerBlue;">' + result.answer + '</li></ul></p>');
+                            });
+                        }
+                        else {
+                            $('#info').append('<p>No results</p>');
+                        }
+                    }
+                });
+            }
+            else {
+                $('#info').empty();
+            }
+        });
+    });
+</script>
+{% endblock %}

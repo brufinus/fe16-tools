@@ -116,3 +116,11 @@ class Seed(db.Model):
 
     def __repr__(self):
         return '<Seed {}>'.format(self.name)
+
+class LectureQuestion(db.Model):
+    id: so.Mapped[int] = so.mapped_column(primary_key=True)
+    question: so.Mapped[str] = so.mapped_column(sa.String(256), index=True, unique=True, nullable=False)
+    answer: so.Mapped[str] = so.mapped_column(sa.String(128), unique=True, nullable=False)
+
+    def __repr__(self):
+        return '<LectureQuestion {}>'.format(self.question)
