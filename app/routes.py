@@ -44,7 +44,7 @@ def index():
 
     return render_template('index.html', title='Home', page_name='FE16 Tools', tools=tools)
 
-@app.route('/meal-finder', methods=['GET', 'POST'])
+@app.route('/meal-finder', methods=['GET'])
 def meal_finder():
     form = DualCharacterForm()
     choices = get_choices(Character, True)
@@ -79,7 +79,7 @@ def get_meal_data():
                     'meals_count': meals_count,
                     'num_chars': num_chars})
 
-@app.route('/tea-helper', methods=['GET', 'POST'])
+@app.route('/tea-helper', methods=['GET'])
 def tea_helper():
     form = CharacterForm()
     choices = get_choices(Character, True)
@@ -115,7 +115,7 @@ def get_tea_data():
                     'comments': comment_data,
                     'answers': answer_data})
 
-@app.route('/item-helper', methods=['GET', 'POST'])
+@app.route('/item-helper', methods=['GET'])
 def item_helper():
     form = ItemForm()
     lost_item_choices = get_choices(LostItem, True)
