@@ -57,6 +57,9 @@
                         else if (mealsCount === 1) {
                             prefixMessage = 'Like this meal:';
                         }
+                        else if (mealsCount === 0) {
+                            prefixMessage = "Share no liked meals.";
+                        }
 
                         $('#info').append('<p><b>' + prefixMessage + '</b></p>');
 
