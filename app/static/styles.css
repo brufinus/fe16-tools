@@ -1,0 +1,60 @@
+:root {
+    --background-color: #ffffff;
+    --text-color: #000000;
+}
+body.dark-mode {
+    --background-color: #121212;
+    --text-color: #ffffff;
+}
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Visited link color. */
+a:visited {
+    color: #551a8b;
+}
+body.dark-mode a:visited {
+    color: #b999ff;
+}
+
+/* Dark theme toggle button. */
+#theme-toggle {
+    padding: 5px 5px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    cursor: pointer;
+    border-radius: 5px;
+}
+#theme-toggle:hover {
+    opacity: 0.8;
+}
+
+/* Tea Helper grid and item styles. */
+.topic-grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 250px);
+    gap: 10px;
+}
+.comment-grid-container{
+    display: grid;
+    grid-template-columns: minmax(100px, auto) minmax(50px, auto);
+    gap: 10px;
+    max-width: 1200px;
+    width: 100%;
+}
+.topic-item, .comment-item, .answer-item {
+    background-color: #f1f1f1;
+    color: #000000;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: left;
+    word-wrap: break-word;
+}
+body.dark-mode .topic-item,
+body.dark-mode .comment-item,
+body.dark-mode .answer-item {
+    background-color: #333333;
+    color: #ffffff;
+}
