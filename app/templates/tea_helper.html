@@ -6,27 +6,6 @@
     <title>Tea Helper Tool</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-<style>
-    .topic-grid-container {
-        display: grid;
-        grid-template-columns: repeat(4, 250px);
-        gap: 10px;
-    }
-    .comment-grid-container{
-        display: grid;
-        grid-template-columns: minmax(100px, auto) minmax(50px, auto);
-        gap: 10px;
-        max-width: 1200px;
-        width: 100%;
-    }
-    .topic-item, .comment-item, .answer-item {
-        background-color: #f1f1f1;
-        padding: 5px;
-        border-radius: 5px;
-        text-align: left;
-        word-wrap: break-word;
-    }
-</style>
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
     <div align="left">
