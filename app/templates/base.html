@@ -1,6 +1,20 @@
 <!doctype html>
 <html>
     <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const currentTheme = localStorage.getItem('theme') || 'light';
+                if (currentTheme === 'dark') {
+                    document.body.classList.add('dark-mode');
+                }
+            });
+            function toggleTheme() {
+                document.body.classList.toggle('dark-mode');
+                const theme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+                localStorage.setItem('theme', theme);
+            }
+        </script>
         {% if title %}
         <title>{{ title }} - FE16 Tools</title>
         {% else %}
@@ -17,6 +31,7 @@
             <a href="{{ url_for('lecture_assistant') }}">Lecture Assistant</a>
         </div>
         <hr>
+        <button id="theme-toggle" onclick="toggleTheme()">Toggle Dark Mode</button>
         <h1>{{ page_name }}</h1>
         {% with messages = get_flashed_messages() %}
         {% if messages %}

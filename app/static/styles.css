@@ -1,0 +1,26 @@
+:root {
+    --background-color: #ffffff;
+    --text-color: #000000;
+}
+
+body.dark-mode {
+    --background-color: #121212;
+    --text-color: #ffffff;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+#theme-toggle {
+    padding: 5px 10px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#theme-toggle:hover {
+    opacity: 0.8;
+}
