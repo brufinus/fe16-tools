@@ -11,7 +11,15 @@ body {
     color: var(--text-color);
 }
 
-/* Dark Theme Toggle Button */
+/* Visited link color. */
+a:visited {
+    color: #551a8b;
+}
+body.dark-mode a:visited {
+    color: #b999ff;
+}
+
+/* Dark theme toggle button. */
 #theme-toggle {
     padding: 5px 10px;
     background-color: var(--background-color);
@@ -23,7 +31,7 @@ body {
     opacity: 0.8;
 }
 
-/* Tea Helper Styles */
+/* Tea Helper grid and item styles. */
 .topic-grid-container {
     display: grid;
     grid-template-columns: repeat(4, 250px);
