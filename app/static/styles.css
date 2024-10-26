@@ -21,7 +21,7 @@ body.dark-mode a:visited {
 
 /* Dark theme toggle button. */
 #theme-toggle {
-    padding: 5px 10px;
+    padding: 5px 5px;
     background-color: var(--background-color);
     color: var(--text-color);
     cursor: pointer;
