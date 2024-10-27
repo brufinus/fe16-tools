@@ -25,7 +25,7 @@ A [dockerized image](https://hub.docker.com/r/brufinus/fe16-tools)
 can be pulled from the docker hub and ran using this command:
 
 ```bash
-docker run --name fe16-tools -p 5000:5000 --rm docker.io/brufinus/fe16-tools:latest
+docker run --pull always --name fe16-tools -p 5000:5000 --rm docker.io/brufinus/fe16-tools:latest
 ```
 
 Once it is running, you can access the tool at http://localhost:5000.

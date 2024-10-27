@@ -5,3 +5,5 @@ Flask-Migrate~=4.0.7
 Flask-SQLAlchemy~=3.1.1
 Flask-WTF~=1.2.1
 alembic~=1.13.3
+
+pytest[tests]~=8.3.3
