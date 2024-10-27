@@ -54,7 +54,9 @@ You can access the app online at
 
 # Issues
 
-If you run into any problems or wish for certain
-features or improvements, please open an Issue.
+If you run into any bugs or wish for certain
+features, please click
+[here](https://github.com/brufinus/fe16-tools/issues/new/choose)
+to open an Issue.
 
 The project is also open to contribution through PR.
