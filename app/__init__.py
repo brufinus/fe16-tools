@@ -12,6 +12,9 @@ app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+from app.errors import bp as errors_bp
+app.register_blueprint(errors_bp)
+
 if not app.debug:
     if not os.path.exists('logs'):
         os.mkdir('logs')
@@ -24,5 +27,4 @@ if not app.debug:
     app.logger.setLevel(logging.INFO)
     app.logger.info('Tools startup')
 
-
-from app import routes, models, errors
+from app import routes, models
