@@ -13,3 +13,14 @@ workflow is implemented to help enforce correct versioning.
 
 By using the Angular Commit Message Convention, semantic-release will
 automatically tag and create releases.
+
+## Testing
+
+Test cases should be set up for new features.
+
+Cases must pass a pytest run.
+
+### Local
+
+1. `pip install pytest`
+2. `pytest`

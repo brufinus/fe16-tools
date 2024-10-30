@@ -34,9 +34,6 @@ def upgrade():
     sa.ForeignKeyConstraint(['menu_id'], ['menu.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-    with op.batch_alter_table('liked_meal', schema=None) as batch_op:
-        batch_op.create_index(batch_op.f('ix_liked_meal_character_id'), ['character_id'], unique=False)
-        batch_op.create_index(batch_op.f('ix_liked_meal_menu_id'), ['menu_id'], unique=False)
 
     # ### end Alembic commands ###
 

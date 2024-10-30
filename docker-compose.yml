@@ -3,6 +3,7 @@ services:
     image: brufinus/fe16-tools
     build:
       context: .
+      target: build-dev
     container_name: fe16-tools
     environment:
       - SECRET_KEY=my-secret-key
