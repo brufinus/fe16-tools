@@ -15,6 +15,9 @@ migrate = Migrate(app, db)
 from app.errors import bp as errors_bp
 app.register_blueprint(errors_bp)
 
+from app.tools import bp as tools
+app.register_blueprint(tools, url_prefix='/tools')
+
 if not app.debug:
     if not os.path.exists('logs'):
         os.mkdir('logs')

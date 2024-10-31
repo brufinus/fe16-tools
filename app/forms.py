@@ -4,10 +4,6 @@ from wtforms.fields.simple import StringField
 from wtforms.validators import DataRequired, Length
 
 
-class DualCharacterForm(FlaskForm):
-    character1 = SelectField('Character 1', choices=[], render_kw={'autofocus': True, 'id': 'dropdown1'})
-    character2 = SelectField('Character 2', choices=[], render_kw={'id': 'dropdown2'})
-
 class CharacterForm(FlaskForm):
     character = SelectField('Character', choices=[], render_kw={'autofocus': True, 'id': 'dropdown'})
 

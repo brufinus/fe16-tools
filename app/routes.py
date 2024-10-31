@@ -1,9 +1,8 @@
 from math import floor
 from flask import render_template, redirect, request, jsonify
-from sqlalchemy import func
 from app import app, db
-from app.forms import CharacterForm, DualCharacterForm, ItemForm, SeedForm, LectureForm
-from app.models import Character, Menu, liked_meals, TeaTopic, LostItem, Gift, liked_gifts, Seed, LectureQuestion
+from app.forms import CharacterForm, ItemForm, SeedForm, LectureForm
+from app.models import Character, TeaTopic, LostItem, Gift, liked_gifts, Seed, LectureQuestion
 from app.utility import get_choices, get_yield_ratios
 import sqlalchemy as sa
 
@@ -15,7 +14,7 @@ def index():
         {
             'name': 'Meal Finder',
             'description': 'Find shared liked meals between characters.',
-            'id': 'meal_finder'
+            'id': 'tools.meal_finder'
         },
         {
             'name': 'Tea Helper',
@@ -43,41 +42,6 @@ def index():
         return redirect('https://fe16-tools.web.app', code=301)
 
     return render_template('index.html', title='Home', page_name='FE16 Tools', tools=tools)
-
-@app.route('/meal-finder', methods=['GET'])
-def meal_finder():
-    form = DualCharacterForm()
-    choices = get_choices(Character, True)
-    form.character1.choices = choices
-    form.character2.choices = choices
-
-    return render_template('meal_finder.html', title='Meal Finder',
-                           page_name='Dining Hall Meal Finder', form=form)
-
-@app.route('/get_meal_data', methods=['POST'])
-def get_meal_data():
-    cid1 = int(request.json['selected_option1'])
-    cid2 = int(request.json['selected_option2'])
-
-    if cid1 == cid2:
-        db_char = db.session.get(Character, cid1)
-        query = db_char.likes.select()
-        menu = db.session.scalars(query).all()
-        num_chars = 1
-    else:
-        menu = db.session.query(Menu).join(liked_meals, Menu.id == liked_meals.c.dish_id) \
-            .filter((liked_meals.c.diner_id == cid1) | (liked_meals.c.diner_id == cid2)) \
-            .group_by(Menu.id) \
-            .having(func.count(liked_meals.c.diner_id) == 2) \
-            .all()
-        num_chars = 2
-
-    meals_data = [{'meal': meal.meal} for meal in menu]
-    meals_count = len(menu)
-
-    return jsonify({'meals': meals_data,
-                    'meals_count': meals_count,
-                    'num_chars': num_chars})
 
 @app.route('/tea-helper', methods=['GET'])
 def tea_helper():
