@@ -11,6 +11,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Python setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run tests
+        run: pytest
+
       - name: Run Semantic Release
         uses: cycjimmy/semantic-release-action@v4
         with:
@@ -20,17 +34,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build Docker image
+      - name: Build Docker images
         if: steps.semantic.outputs.new_release_published == 'true'
         run: |
-          echo ${{ steps.semantic.outputs.new_release_version }}
-          docker build -t brufinus/fe16-tools .
+          docker build --target build-dev -t brufinus/fe16-tools .
           docker tag brufinus/fe16-tools brufinus/fe16-tools:v${{ steps.semantic.outputs.new_release_version }}
+          docker build --target build-prod -t brufinus/fe16-tools-prod .
+          docker tag brufinus/fe16-tools-prod brufinus/fe16-tools:v${{ steps.semantic.outputs.new_release_version }}-prod
 
-      - name: Push Docker image to Docker Hub
+      - name: Push Docker images to Docker Hub
         if: steps.semantic.outputs.new_release_published == 'true'
         run: |
           echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u brufinus --password-stdin
           docker push brufinus/fe16-tools
           docker push brufinus/fe16-tools:v${{ steps.semantic.outputs.new_release_version }}
-
+          docker push brufinus/fe16-tools:v${{ steps.semantic.outputs.new_release_version }}-prod
