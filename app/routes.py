@@ -1,8 +1,8 @@
 from math import floor
 from flask import render_template, redirect, request, jsonify
 from app import app, db
-from app.forms import CharacterForm, ItemForm, SeedForm, LectureForm
-from app.models import Character, TeaTopic, LostItem, Gift, liked_gifts, Seed, LectureQuestion
+from app.forms import ItemForm, SeedForm, LectureForm
+from app.models import Character, LostItem, Gift, liked_gifts, Seed, LectureQuestion
 from app.utility import get_choices, get_yield_ratios
 import sqlalchemy as sa
 
@@ -19,7 +19,7 @@ def index():
         {
             'name': 'Tea Helper',
             'description': 'Get favorite teas, liked topics, and correct responses.',
-            'id': 'tea_helper'
+            'id': 'tools.tea_helper'
         },
         {
             'name': 'Item Helper',
@@ -42,42 +42,6 @@ def index():
         return redirect('https://fe16-tools.web.app', code=301)
 
     return render_template('index.html', title='Home', page_name='FE16 Tools', tools=tools)
-
-@app.route('/tea-helper', methods=['GET'])
-def tea_helper():
-    form = CharacterForm()
-    choices = get_choices(Character, True)
-    form.character.choices = choices
-
-    return render_template('tea_helper.html', title='Tea Helper',
-                           page_name='Tea Party Helper', form=form)
-
-@app.route('/get_tea_data', methods=['POST'])
-def get_tea_data():
-    cid = int(request.json['selected_option'])
-    char = db.session.get(Character, cid)
-
-    query = char.likes_tea.select()
-    tea = db.session.scalars(query).all()
-    tea_data = [{'tea': t.name} for t in tea]
-    tea_count = len(tea)
-
-    query = char.likes_tea_topic.select().order_by(TeaTopic.data)
-    topics = db.session.scalars(query).all()
-    topic_data = [{'topic': t.data} for t in topics]
-
-    final_topics = sorted(char.final_tea_comment, key=lambda final_topic: final_topic.comment)
-    comment_data = []
-    answer_data = []
-    for topic in final_topics:
-        comment_data.append({'comment': topic.comment})
-        answer_data.append({'answer': topic.response})
-
-    return jsonify({'tea': tea_data,
-                    'tea_count': tea_count,
-                    'topics': topic_data,
-                    'comments': comment_data,
-                    'answers': answer_data})
 
 @app.route('/item-helper', methods=['GET'])
 def item_helper():

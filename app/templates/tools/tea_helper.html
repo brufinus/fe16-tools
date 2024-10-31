@@ -29,7 +29,7 @@
         function updateInfo() {
             var selectedOption = $('#dropdown').val();
             $.ajax({
-                url: '/get_tea_data',
+                url: '/tools/get_tea_data',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({

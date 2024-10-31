@@ -4,9 +4,6 @@ from wtforms.fields.simple import StringField
 from wtforms.validators import DataRequired, Length
 
 
-class CharacterForm(FlaskForm):
-    character = SelectField('Character', choices=[], render_kw={'autofocus': True, 'id': 'dropdown'})
-
 class ItemForm(FlaskForm):
     lost_item = SelectField('Item', choices=[], render_kw={'autofocus': True, 'id': 'lost_item_dropdown'})
     character = SelectField('Character', choices=[], render_kw={'id': 'character_dropdown'})
