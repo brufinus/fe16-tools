@@ -42,7 +42,7 @@ class Character(db.Model):
                                                                       back_populates='liked_tea_topic')
     final_tea_comment: so.Mapped[list['TeaFinalTopic']] = so.relationship("TeaFinalTopic",
                                                                           back_populates="commenter")
-    lost_items: so.Mapped[list['TeaFinalTopic']] = so.relationship("LostItem", back_populates="owner")
+    lost_items: so.Mapped[list['LostItem']] = so.relationship("LostItem", back_populates="owner")
     likes_gift: so.Mapped['Gift'] = so.relationship(secondary=liked_gifts, back_populates='liked_by')
 
     def __repr__(self):
