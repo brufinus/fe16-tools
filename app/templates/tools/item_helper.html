@@ -37,7 +37,7 @@
             var lostItemSelectedOption = $('#lost_item_dropdown').val();
             var characterSelectedOption = $('#character_dropdown').val();
             $.ajax({
-                url: '/get_item_data',
+                url: '/tools/get_item_data',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({

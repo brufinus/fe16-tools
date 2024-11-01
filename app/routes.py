@@ -1,10 +1,9 @@
 from math import floor
 from flask import render_template, redirect, request, jsonify
 from app import app, db
-from app.forms import ItemForm, SeedForm, LectureForm
-from app.models import Character, LostItem, Gift, liked_gifts, Seed, LectureQuestion
+from app.forms import SeedForm, LectureForm
+from app.models import Seed, LectureQuestion
 from app.utility import get_choices, get_yield_ratios
-import sqlalchemy as sa
 
 
 @app.route('/')
@@ -24,7 +23,7 @@ def index():
         {
             'name': 'Item Helper',
             'description': 'Help return lost items and deliver liked gifts.',
-            'id': 'item_helper'
+            'id': 'tools.item_helper'
         },
         {
             'name': 'Seed Simulator',
@@ -42,31 +41,6 @@ def index():
         return redirect('https://fe16-tools.web.app', code=301)
 
     return render_template('index.html', title='Home', page_name='FE16 Tools', tools=tools)
-
-@app.route('/item-helper', methods=['GET'])
-def item_helper():
-    form = ItemForm()
-    lost_item_choices = get_choices(LostItem, True)
-    character_choices = get_choices(Character, True)
-    form.lost_item.choices = lost_item_choices
-    form.character.choices = character_choices
-
-    return render_template('item_helper.html', title='Item Helper', page_name='Item Helper', form=form)
-
-@app.route('/get_item_data', methods=['POST'])
-def get_item_data():
-    lid = int(request.json['lost_item_selected_option'])
-    lost_item = db.session.get(LostItem, lid)
-    character = lost_item.owner.name
-    character_data = [{'character': character}]
-
-    cid = int(request.json['character_selected_option'])
-    query = sa.select(Gift).join(liked_gifts).where(liked_gifts.c.character_id == cid)
-    gifts = db.session.scalars(query).all()
-    gift_data = [{'name': gift.name} for gift in gifts]
-
-    return jsonify({'character': character_data,
-                    'gifts': gift_data})
 
 @app.route('/seed-simulator', methods=['GET', 'POST'])
 def seed_simulator():
