@@ -75,7 +75,7 @@
             var seed5SelectedOption = $('#seed5_dropdown').val();
             var cultivationSelectedOption = $('#cultivation_dropdown').val();
             $.ajax({
-                url: '/get_seed_data',
+                url: '/tools/get_seed_data',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify({

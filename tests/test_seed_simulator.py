@@ -9,7 +9,7 @@ def get_sid(db, name, *args):
 
 def assert_response(client, sid1, sid2, sid3, sid4, sid5, cultivation,
                     expected_score, expected_yield, expected_ratio, expected_coefficient):
-    response = client.post('/get_seed_data', json={
+    response = client.post('/tools/get_seed_data', json={
         'seed1_selected_option': sid1,
         'seed2_selected_option': sid2,
         'seed3_selected_option': sid3,
