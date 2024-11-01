@@ -18,6 +18,9 @@ app.register_blueprint(errors_bp)
 from app.tools import bp as tools
 app.register_blueprint(tools, url_prefix='/tools')
 
+from app.main import bp as main
+app.register_blueprint(main)
+
 if not app.debug:
     if not os.path.exists('logs'):
         os.mkdir('logs')
@@ -30,4 +33,4 @@ if not app.debug:
     app.logger.setLevel(logging.INFO)
     app.logger.info('Tools startup')
 
-from app import routes, models
+from app import models

@@ -1,9 +1,10 @@
-from flask import render_template, redirect, request
-from app import app
+from flask import redirect, render_template, request
+
+from app.main import bp
 
 
-@app.route('/')
-@app.route('/index')
+@bp.route('/')
+@bp.route('/index')
 def index():
     tools = [
         {
