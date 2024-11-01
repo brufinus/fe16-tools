@@ -1,5 +1,5 @@
 def get_response(client, query):
-    return client.post('/get_lecture_data', json={
+    return client.post('/tools/get_lecture_data', json={
         'q': query
     })
 

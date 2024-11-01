@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms.fields.choices import SelectField
-from wtforms.fields.simple import SubmitField
+from wtforms.fields.simple import StringField, SubmitField
+from wtforms.validators import DataRequired, Length
 
 
 class CharacterForm(FlaskForm):
@@ -14,6 +15,9 @@ class ItemForm(FlaskForm):
     lost_item = SelectField('Item', choices=[], render_kw={'autofocus': True, 'id': 'lost_item_dropdown'})
     character = SelectField('Character', choices=[], render_kw={'id': 'character_dropdown'})
 
+class LectureForm(FlaskForm):
+    question_query = StringField('Press Enter to clear.', validators=[DataRequired(), Length(max=25)],
+                                 id='search-bar')
 class SeedForm(FlaskForm):
     seed1 = SelectField('Seed 1', choices=[], render_kw={'autofocus': True, 'id': 'seed1_dropdown'})
     seed2 = SelectField('Seed 2', choices=[], render_kw={'id': 'seed2_dropdown'})

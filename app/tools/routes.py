@@ -5,9 +5,9 @@ from app import db
 from flask import jsonify, redirect, render_template, request
 from sqlalchemy import func
 
-from app.models import liked_meals, liked_gifts, Character, Gift, LostItem, Menu, Seed, TeaTopic
-from app.tools.forms import CharacterForm, DualCharacterForm, ItemForm, SeedForm
+from app.models import liked_meals, liked_gifts, Character, Gift, LectureQuestion, LostItem, Menu, Seed, TeaTopic
 from app.tools import bp
+from app.tools.forms import CharacterForm, DualCharacterForm, ItemForm, LectureForm, SeedForm
 from app.tools.utility import get_choices, get_yield_ratios
 
 
@@ -153,3 +153,19 @@ def get_seed_data():
                     'yield': str(yld),
                     'ratio': ratio,
                     'coefficient': str(coefficient)})
+
+@bp.route('/lecture-assistant', methods=['GET'])
+def lecture_assistant():
+    form = LectureForm()
+
+    return render_template('tools/lecture_assistant.html', title='Lecture Assist',
+                           page_name='Lecture Assistant', form=form)
+
+@bp.route('/get_lecture_data', methods=['POST'])
+def get_lecture_data():
+    query = request.json.get('q', '')
+    if query:
+        results = LectureQuestion.query.filter(LectureQuestion.question.ilike(f'%{query}%')).all()
+        data = [{'id': q.id, 'question': q.question, 'answer': q.answer} for q in results]
+        return jsonify({'data': data})
+    return jsonify({'data': []})

@@ -1,7 +1,5 @@
-from flask import render_template, redirect, request, jsonify
+from flask import render_template, redirect, request
 from app import app
-from app.forms import LectureForm
-from app.models import LectureQuestion
 
 
 @app.route('/')
@@ -31,7 +29,7 @@ def index():
         {
             'name': 'Lecture Assistant',
             'description': 'Correctly answer the monthly lecture question.',
-            'id': 'lecture_assistant'
+            'id': 'tools.lecture_assistant'
         }
     ]
 
@@ -39,19 +37,3 @@ def index():
         return redirect('https://fe16-tools.web.app', code=301)
 
     return render_template('index.html', title='Home', page_name='FE16 Tools', tools=tools)
-
-@app.route('/lecture-assistant', methods=['GET'])
-def lecture_assistant():
-    form = LectureForm()
-
-    return render_template('lecture_assistant.html', title='Lecture Assist',
-                           page_name='Lecture Assistant', form=form)
-
-@app.route('/get_lecture_data', methods=['POST'])
-def get_lecture_data():
-    query = request.json.get('q', '')
-    if query:
-        results = LectureQuestion.query.filter(LectureQuestion.question.ilike(f'%{query}%')).all()
-        data = [{'id': q.id, 'question': q.question, 'answer': q.answer} for q in results]
-        return jsonify({'data': data})
-    return jsonify({'data': []})
