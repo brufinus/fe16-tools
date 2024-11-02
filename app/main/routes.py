@@ -1,3 +1,11 @@
+"""Define routes for the main blueprint
+
+This module provides the view function for the main screen.
+
+Functions:
+    - index: Render the main application screen.
+"""
+
 from flask import redirect, render_template, request
 
 from app.main import bp
@@ -6,6 +14,14 @@ from app.main import bp
 @bp.route('/')
 @bp.route('/index')
 def index():
+    """Render the main screen.
+
+    This view function renders a link to each tool on the main screen and redirects users to the short hostname.
+
+    :return: The rendered template for the main screen.
+    :rtype: str
+    """
+
     tools = [
         {
             'name': 'Meal Finder',

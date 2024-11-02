@@ -1,6 +1,7 @@
 from app.models import LostItem
 from helper import get_cid
 
+
 def get_lid(db, name):
     return db.session.query(LostItem).filter_by(name=name).first().id
 

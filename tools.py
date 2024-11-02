@@ -1,6 +1,6 @@
-import sqlalchemy as sa
-import sqlalchemy.orm as so
-from app import create_app, db
-from app.models import Character, Menu
+"""Entry point for the fe16-tools Flask application."""
+
+from app import create_app
+
 
 app = create_app()
