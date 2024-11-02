@@ -32,7 +32,7 @@
                 var selectedOption1 = $('#dropdown1').val();
                 var selectedOption2 = $('#dropdown2').val();
                 $.ajax({
-                    url: '/get_meal_data',
+                    url: '/tools/get_meal_data',
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify({

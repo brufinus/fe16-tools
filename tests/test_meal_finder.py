@@ -1,8 +1,9 @@
 from helper import get_cid
 
+
 def assert_response(client, cid1, cid2,
                     expected_liked_meals_list, disliked_meal, expected_char_count):
-    response = client.post('/get_meal_data', json={
+    response = client.post('tools/get_meal_data', json={
         'selected_option1': cid1,
         'selected_option2': cid2,
     })

@@ -1,9 +1,10 @@
 from helper import get_cid
 
+
 def assert_response(client, cid,
                     expected_liked_teas_list, disliked_tea, liked_topics_list, disliked_topic, expected_topic_count,
                     final_comments_list, expected_comments_count, answers_list):
-    response = client.post('/get_tea_data', json={
+    response = client.post('/tools/get_tea_data', json={
         'selected_option': cid,
     })
 

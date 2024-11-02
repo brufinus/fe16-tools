@@ -1,28 +1,29 @@
-import pytest
-from app import app, db
+import os
 
-@pytest.fixture()
-def tools_app():
+import pytest
+
+from app import create_app, db
+from config import basedir
+
+
+@pytest.fixture(scope='session')
+def app():
+    app = create_app()
     app.config.update({
+        "SQLALCHEMY_DATABASE_URI": 'sqlite:///' + os.path.join(basedir, 'app.db'),
         "TESTING": True,
         "WTF_CSRF_ENABLED": False,
     })
 
+    yield app
+
+@pytest.fixture(scope='session')
+def client(app):
+    return app.test_client()
+
+@pytest.fixture(scope='session')
+def db_context(app):
     with app.app_context():
-        yield app
-
-@pytest.fixture()
-def client(tools_app):
-    with tools_app.test_client() as client:
-        yield client
-
-@pytest.fixture()
-def runner(tools_app):
-    return app.test_cli_runner()
-
-@pytest.fixture()
-def db_context(tools_app):
-    with tools_app.app_context():
         yield db
 
 def test_home_page(client):

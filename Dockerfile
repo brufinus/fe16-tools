@@ -13,3 +13,10 @@ ENTRYPOINT [ "./boot.sh" ]
 FROM build-prod AS build-dev
 
 COPY app.db ./
+
+FROM build-dev AS build-test
+
+COPY boot_test.sh boot.sh
+RUN apt-get update && apt-get install -y curl && \
+    rm -rf /var/lib/apt/lists/* && \
+    chmod a+x boot.sh

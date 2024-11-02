@@ -1,11 +1,12 @@
 from app.models import LostItem
 from helper import get_cid
 
+
 def get_lid(db, name):
     return db.session.query(LostItem).filter_by(name=name).first().id
 
 def assert_response(client, lid, expected_owner, cid, expected_liked_gifts_list):
-    response = client.post('/get_item_data', json={
+    response = client.post('/tools/get_item_data', json={
         'lost_item_selected_option': lid,
         'character_selected_option': cid
     })

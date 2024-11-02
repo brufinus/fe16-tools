@@ -25,12 +25,12 @@
     </head>
     <body>
         <div>FE16 Tools:
-            <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('meal_finder') }}">Meal Finder</a>
-            <a href="{{ url_for('tea_helper') }}">Tea Helper</a>
-            <a href="{{ url_for('item_helper') }}">Item Helper</a>
-            <a href="{{ url_for('seed_simulator') }}">Seed Simulator</a>
-            <a href="{{ url_for('lecture_assistant') }}">Lecture Assistant</a>
+            <a href="{{ url_for('main.index') }}">Home</a>
+            <a href="{{ url_for('tools.meal_finder') }}">Meal Finder</a>
+            <a href="{{ url_for('tools.tea_helper') }}">Tea Helper</a>
+            <a href="{{ url_for('tools.item_helper') }}">Item Helper</a>
+            <a href="{{ url_for('tools.seed_simulator') }}">Seed Simulator</a>
+            <a href="{{ url_for('tools.lecture_assistant') }}">Lecture Assistant</a>
         </div>
         <hr>
         <button id="theme-toggle" onclick="toggleTheme()">Toggle Dark Mode</button>

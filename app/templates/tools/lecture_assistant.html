@@ -34,7 +34,7 @@
             const query = $(this).val();
             if (query.length > 0) {
                 $.ajax({
-                    url: '/get_lecture_data',
+                    url: '/tools/get_lecture_data',
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify({ q: query }),

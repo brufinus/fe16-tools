@@ -1,61 +1,61 @@
+"""Define routes for the tools blueprint.
+
+This module provides view functions for each gameplay tool.
+
+Functions:
+    - meal_finder: Render the meal finder tool.
+    - get_meal_data: Get response liked meal data in json format.
+    - tea_helper: Render the tea helper tool.
+    - get_tea_data: Get response tea party data in json format.
+    - item_helper: Render the item helper tool.
+    - get_item_data: Get response lost item and gift data in json format.
+    - seed_simulator: Render the seed simulator tool.
+    - get_seed_data: Get response greenhouse seed data in json format.
+    - lecture_assistant: Render the lecture assistant tool.
+    - get_lecture_data: Get response monthly lecture data in json format.
+"""
+
 from math import floor
-from flask import render_template, redirect, request, jsonify
-from sqlalchemy import func
-from app import app, db
-from app.forms import CharacterForm, DualCharacterForm, ItemForm, SeedForm, LectureForm
-from app.models import Character, Menu, liked_meals, TeaTopic, LostItem, Gift, liked_gifts, Seed, LectureQuestion
-from app.utility import get_choices, get_yield_ratios
+
 import sqlalchemy as sa
+from app import db
+from flask import jsonify, redirect, render_template, request
+from sqlalchemy import func
+
+from app.models import liked_meals, liked_gifts, Character, Gift, LectureQuestion, LostItem, Menu, Seed, TeaTopic
+from app.tools import bp
+from app.tools.forms import CharacterForm, DualCharacterForm, ItemForm, LectureForm, SeedForm
+from app.tools.utility import get_choices, get_yield_ratios
 
 
-@app.route('/')
-@app.route('/index')
-def index():
-    tools = [
-        {
-            'name': 'Meal Finder',
-            'description': 'Find shared liked meals between characters.',
-            'id': 'meal_finder'
-        },
-        {
-            'name': 'Tea Helper',
-            'description': 'Get favorite teas, liked topics, and correct responses.',
-            'id': 'tea_helper'
-        },
-        {
-            'name': 'Item Helper',
-            'description': 'Help return lost items and deliver liked gifts.',
-            'id': 'item_helper'
-        },
-        {
-            'name': 'Seed Simulator',
-            'description': 'Simulate Greenhouse seed combinations.',
-            'id': 'seed_simulator'
-        },
-        {
-            'name': 'Lecture Assistant',
-            'description': 'Correctly answer the monthly lecture question.',
-            'id': 'lecture_assistant'
-        }
-    ]
-
-    if request.host == 'fe16-tools-33427842621.us-central1.run.app':
-        return redirect('https://fe16-tools.web.app', code=301)
-
-    return render_template('index.html', title='Home', page_name='FE16 Tools', tools=tools)
-
-@app.route('/meal-finder', methods=['GET'])
+@bp.route('/meal-finder', methods=['GET'])
 def meal_finder():
+    """Render the meal finder tool.
+
+    This view function grabs the options for the character form and renders the meal finder template.
+
+    :return: The rendered template for the meal finder tool.
+    :rtype: str
+    """
+
     form = DualCharacterForm()
     choices = get_choices(Character, True)
     form.character1.choices = choices
     form.character2.choices = choices
 
-    return render_template('meal_finder.html', title='Meal Finder',
+    return render_template('tools/meal_finder.html', title='Meal Finder',
                            page_name='Dining Hall Meal Finder', form=form)
 
-@app.route('/get_meal_data', methods=['POST'])
+@bp.route('/get_meal_data', methods=['POST'])
 def get_meal_data():
+    """Get liked meal data.
+
+    This view function returns data on characters' shared liked meals in json format.
+
+    :return: The liked meal data in json format.
+    :rtype: Response
+    """
+
     cid1 = int(request.json['selected_option1'])
     cid2 = int(request.json['selected_option2'])
 
@@ -66,10 +66,10 @@ def get_meal_data():
         num_chars = 1
     else:
         menu = db.session.query(Menu).join(liked_meals, Menu.id == liked_meals.c.dish_id) \
-            .filter((liked_meals.c.diner_id == cid1) | (liked_meals.c.diner_id == cid2)) \
-            .group_by(Menu.id) \
-            .having(func.count(liked_meals.c.diner_id) == 2) \
-            .all()
+               .filter((liked_meals.c.diner_id == cid1) | (liked_meals.c.diner_id == cid2)) \
+               .group_by(Menu.id) \
+               .having(func.count(liked_meals.c.diner_id) == 2) \
+               .all()
         num_chars = 2
 
     meals_data = [{'meal': meal.meal} for meal in menu]
@@ -79,17 +79,34 @@ def get_meal_data():
                     'meals_count': meals_count,
                     'num_chars': num_chars})
 
-@app.route('/tea-helper', methods=['GET'])
+@bp.route('/tea-helper', methods=['GET'])
 def tea_helper():
+    """Render the tea helper tool.
+
+    This view function grabs the options for the character form and renders the tea helper template.
+
+    :return: The rendered template for the tea helper tool.
+    :rtype: str
+    """
+
     form = CharacterForm()
     choices = get_choices(Character, True)
     form.character.choices = choices
 
-    return render_template('tea_helper.html', title='Tea Helper',
+    return render_template('tools/tea_helper.html', title='Tea Helper',
                            page_name='Tea Party Helper', form=form)
 
-@app.route('/get_tea_data', methods=['POST'])
+@bp.route('/get_tea_data', methods=['POST'])
 def get_tea_data():
+    """Get tea party data.
+
+    This view function returns data on a character's liked teas, topics, and final
+    comments and answers during a tea party. The data is returned in json format.
+
+    :return: The tea party data in json format.
+    :rtype: Response
+    """
+
     cid = int(request.json['selected_option'])
     char = db.session.get(Character, cid)
 
@@ -115,18 +132,36 @@ def get_tea_data():
                     'comments': comment_data,
                     'answers': answer_data})
 
-@app.route('/item-helper', methods=['GET'])
+@bp.route('/item-helper', methods=['GET'])
 def item_helper():
+    """Render the item helper tool.
+
+    This view function grabs the options for the lost item and character forms and renders the item helper template.
+
+    :return: The rendered template for the item helper tool.
+    :rtype: str
+    """
+
     form = ItemForm()
     lost_item_choices = get_choices(LostItem, True)
     character_choices = get_choices(Character, True)
     form.lost_item.choices = lost_item_choices
     form.character.choices = character_choices
 
-    return render_template('item_helper.html', title='Item Helper', page_name='Item Helper', form=form)
+    return render_template('tools/item_helper.html', title='Item Helper', page_name='Item Helper',
+                           form=form)
 
-@app.route('/get_item_data', methods=['POST'])
+@bp.route('/get_item_data', methods=['POST'])
 def get_item_data():
+    """Get lost item and liked gift data.
+
+    This view function returns data on owners of items lost around the monastery
+    as well as gifts that characters like. The data is returned in json format.
+
+    :return: The lost item and liked gift data in json format.
+    :rtype: Response
+    """
+
     lid = int(request.json['lost_item_selected_option'])
     lost_item = db.session.get(LostItem, lid)
     character = lost_item.owner.name
@@ -140,8 +175,16 @@ def get_item_data():
     return jsonify({'character': character_data,
                     'gifts': gift_data})
 
-@app.route('/seed-simulator', methods=['GET', 'POST'])
+@bp.route('/seed-simulator', methods=['GET', 'POST'])
 def seed_simulator():
+    """Render the seed simulator tool.
+
+    This view function grabs the options for the seed forms and renders the seed simulator template.
+
+    :return: The rendered template for the seed simulator tool.
+    :rtype: str
+    """
+
     form = SeedForm()
     seed_choices = [(-1, '')]
     seed_choices.extend(get_choices(Seed, False))
@@ -155,11 +198,20 @@ def seed_simulator():
     if form.validate_on_submit():
         return redirect('')
 
-    return render_template('seed_simulator.html', title='Seed Sim',
+    return render_template('tools/seed_simulator.html', title='Seed Sim',
                            page_name='Seed Simulator', form=form)
 
-@app.route('/get_seed_data', methods=['POST'])
+@bp.route('/get_seed_data', methods=['POST'])
 def get_seed_data():
+    """Get greenhouse seed data.
+
+    This view function returns data on simulated greenhouse seed selections and returns it in json format.
+    Hidden score calculation is performed here.
+
+    :return: The selection score, yield, ratio, and stat-booster coefficient in json format.
+    :rtype: Response
+    """
+
     sids = [int(request.json[f'seed{i}_selected_option']) for i in range(1, 6)]
     unique_seeds = db.session.query(Seed).filter(Seed.id.in_(sids)).all()
     seed_map = {seed.id: seed for seed in unique_seeds}
@@ -186,15 +238,31 @@ def get_seed_data():
                     'ratio': ratio,
                     'coefficient': str(coefficient)})
 
-@app.route('/lecture-assistant', methods=['GET'])
+@bp.route('/lecture-assistant', methods=['GET'])
 def lecture_assistant():
+    """Render the lecture assistant tool.
+
+    This view function renders the lecture assistant template.
+
+    :return: The rendered template for the lecture assistant tool.
+    :rtype: str
+    """
+
     form = LectureForm()
 
-    return render_template('lecture_assistant.html', title='Lecture Assist',
+    return render_template('tools/lecture_assistant.html', title='Lecture Assist',
                            page_name='Lecture Assistant', form=form)
 
-@app.route('/get_lecture_data', methods=['POST'])
+@bp.route('/get_lecture_data', methods=['POST'])
 def get_lecture_data():
+    """Get monthly lecture data.
+
+    This view function returns data on the monthly lecture question and returns it in json format.
+
+    :return: The lecture question and answer in json format.
+    :rtype: Response
+    """
+
     query = request.json.get('q', '')
     if query:
         results = LectureQuestion.query.filter(LectureQuestion.question.ilike(f'%{query}%')).all()

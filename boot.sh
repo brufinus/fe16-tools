@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# Runs the database migration and starts the Gunicorn server.
+
 while true; do
     flask db upgrade
     if [[ "$?" == "0" ]]; then
