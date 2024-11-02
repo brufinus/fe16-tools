@@ -27,4 +27,8 @@ jobs:
 
       - name: Test Docker build
         run: |
-          docker build --target build-dev -t test-build .
+          docker build --target build-test -t test-build-server .
+
+      - name: Run server test
+        run: |
+          docker run --rm test-build-server

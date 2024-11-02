@@ -16,7 +16,7 @@ COPY app.db ./
 
 FROM build-dev AS build-test
 
-COPY tests/test_boot.sh boot.sh
+COPY boot_test.sh boot.sh
 RUN apt-get update && apt-get install -y curl && \
     rm -rf /var/lib/apt/lists/* && \
     chmod a+x boot.sh
