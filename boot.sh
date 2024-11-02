@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Runs an upgrade on the database using migrations and starts the gunicorn server.
+# Runs the database migration and starts the Gunicorn server.
 
 while true; do
     flask db upgrade
