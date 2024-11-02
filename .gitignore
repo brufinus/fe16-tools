@@ -245,4 +245,7 @@ fabric.properties
 .firebase*
 firebase.json
 public
-tag-push.sh
+
+# Visual Studio Code
+.vscode/*
+
