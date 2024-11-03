@@ -32,10 +32,11 @@ $(document).ready(function () {
         }
 
         $('#info').append('<p><b>' + prefixMessage + '</b></p>');
-
+        var ul = $('<ul></ul>');
         response.meals.forEach(function (meal) {
-          $('#info').append('<p>' + meal.meal + '</p>');
+          ul.append('<li>' + meal.meal + '</li>');
         });
+        $('#info').append(ul);
       },
       error: function (error) {
         console.log("Error:", error);

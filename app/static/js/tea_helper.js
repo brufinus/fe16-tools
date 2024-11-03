@@ -25,9 +25,11 @@ $(document).ready(function () {
         }
 
         $('#tea_info').append('<p><b>' + prefixMessage + '</b></p>');
+        var ul = $('<ul></ul>')
         response.tea.forEach(function (tea) {
-          $('#tea_info').append('<p>' + tea.tea + '</p>');
+          ul.append('<li>' + tea.tea + '</li>');
         });
+        $('#tea_info').append(ul);
 
         response.topics.forEach(function (topics) {
           $('#topic_info').append('<div class="topic-item">' + topics.topic + '</div>');

@@ -18,12 +18,14 @@ $(document).ready(function () {
 
         $('#lost_item_info').append('Owner: ');
         response.character.forEach(function (character) {
-          $('#lost_item_info').append(character.character);
+          $('#lost_item_info').append('<b>' + character.character + '</b>');
         });
 
+        var ul = $('<ul></ul>')
         response.gifts.forEach(function (gift) {
-          $('#liked_gift_info').append('<p>' + gift.name + '</p>');
+          ul.append('<li>' + gift.name + '</li>');
         });
+        $('#liked_gift_info').append(ul);
       },
       error: function (error) {
         console.log("Error:", error);
