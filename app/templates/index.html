@@ -1,23 +1,24 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div>
-        <p>A collection of tools for helping with gameplay in Fire Emblem: Three Houses.</p>
-    </div>
-    <div>
-        <h4>Tools:</h4>
-        {% for tool in tools %}
-            <ul>
-                <li><a href="{{ url_for(tool.id) }}">{{ tool.name }}</a> - <b>{{ tool.description }}</b></li>
-            </ul>
-        {% endfor %}
-    </div>
-    <div>
-        <h4>Links:</h4>
-        <ul>
-            <li><a href="https://github.com/brufinus/fe16-tools" target="_blank" rel="noopener noreferrer">GitHub - Source code</a>
-                <br>Find bugs or incorrect data? Open an issue here.
-            </li>
-        </ul>
-    </div>
+<div>
+  <p>A collection of tools for helping with gameplay in Fire Emblem: Three Houses.</p>
+</div>
+<div>
+  <h4>Tools:</h4>
+  {% for tool in tools %}
+  <ul>
+    <li><a href="{{ url_for(tool.id) }}">{{ tool.name }}</a> - <b>{{ tool.description }}</b></li>
+  </ul>
+  {% endfor %}
+</div>
+<div>
+  <h4>Links:</h4>
+  <ul>
+    <li><a href="https://github.com/brufinus/fe16-tools" target="_blank" rel="noopener noreferrer">GitHub - Source
+        code</a>
+      <br>Find bugs or incorrect data? Open an issue here.
+    </li>
+  </ul>
+</div>
 {% endblock %}

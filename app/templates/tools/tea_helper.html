@@ -1,85 +1,30 @@
 {% extends "base.html" %}
+
 {% block content %}
+
 <head>
-    <title>Tea Helper Tool</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <title>Tea Helper Tool</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <form action="" method="post" novalidate>
-    {{ form.hidden_tag() }}
-    <div align="left">
-        <div style="display: inline-block">
-            {{ form.character.label }}:
-            {{ form.character }}
-        </div>
+  {{ form.hidden_tag() }}
+  <div align="left">
+    <div style="display: inline-block">
+      {{ form.character.label }}:
+      {{ form.character }}
     </div>
-    <div id="tea_info">
-        <!-- Tea info updates here -->
-    </div>
-    <p><b>Interested topics:</b></p>
-    <div id="topic_info" class="topic-grid-container">
-        <!-- Topic info updates here -->
-    </div>
-    <p><b>Final topics:</b></p>
-    <div id="final_topic_info">
-        <!-- Final topic info updates here -->
-    </div>
+  </div>
+  <div id="tea_info">
+    <!-- Tea info updates here -->
+  </div>
+  <p><b>Interested topics:</b></p>
+  <div id="topic_info" class="topic-grid-container">
+    <!-- Topic info updates here -->
+  </div>
+  <p><b>Final topics:</b></p>
+  <div id="final_topic_info">
+    <!-- Final topic info updates here -->
+  </div>
 </form>
-<script>
-    $(document).ready(function() {
-        function updateInfo() {
-            var selectedOption = $('#dropdown').val();
-            $.ajax({
-                url: '/tools/get_tea_data',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    selected_option: selectedOption
-                }),
-                success: function(response) {
-                    $('#tea_info').empty();
-                    $('#topic_info').empty();
-                    $('#final_topic_info').empty();
-
-                    var teaCount = response.tea_count;
-                    var prefixMessage = '';
-
-                    if (teaCount > 1) {
-                        prefixMessage = 'Favorite teas:';
-                    }
-                    else {
-                        prefixMessage = 'Favorite tea:';
-                    }
-
-                    $('#tea_info').append('<p><b>' + prefixMessage + '</b></p>');
-                    response.tea.forEach(function(tea) {
-                        $('#tea_info').append('<p>' + tea.tea + '</p>');
-                    });
-
-                    response.topics.forEach(function(topics) {
-                        $('#topic_info').append('<div class="topic-item">' + topics.topic + '</div>');
-                    });
-
-                    var gridContainer = $('<div>').addClass('comment-grid-container');
-                    response.comments.forEach(function(c, index) {
-                        var a = response.answers[index];
-                        var commentDiv = $('<div>').addClass('comment-item').text(c.comment);
-                        var answerDiv = $('<div>').addClass('answer-item').text(a.answer);
-                        gridContainer.append(commentDiv);
-                        gridContainer.append(answerDiv);
-                    });
-                    $('#final_topic_info').append(gridContainer);
-                },
-                error: function(error) {
-                    console.log("Error:", error);
-                }
-            });
-        }
-
-        $('#dropdown').change(function() {
-            updateInfo();
-        });
-
-        updateInfo();
-    });
-</script>
+<script src="{{ url_for('static', filename='js/tea_helper.js') }}"></script>
 {% endblock %}

@@ -4,6 +4,18 @@
 
 Use [Angular Commit Message Convention](https://github.com/angular/angular/blob/main/CONTRIBUTING.md#-commit-message-format).
 
+Prefix your commit with one of the following types:
+- **build**: Build system or external dependencies
+- **ci**: Continuous Integration configuration
+- **docs**: Documentation
+- **feat**: New feature
+- **fix**: Bug fix
+- **perf**: Performance improvement
+- **refactor**: Code refactor
+- **revert**: Reverted change
+- **style**: CSS or HTML style
+- **tests**: Add or fix tests
+
 ## Semantic Versioning
 
 This repository follows [semantic versioning rules](https://semver.org/).
