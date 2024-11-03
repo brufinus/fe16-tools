@@ -1,35 +1,37 @@
 {% extends "base.html" %}
+
 {% block content %}
+
 <head>
-    <title>Item Helper Tool</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <title>Item Helper Tool</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <form action="" method="post" novalidate>
-    {{ form.hidden_tag() }}
-    <h3>Lost Items</h3>
-    <div align="left">
-        <div style="display: inline-block">
-            {{ form.lost_item.label }}:
-            {{ form.lost_item }}
-        </div>
+  {{ form.hidden_tag() }}
+  <h3>Lost Items</h3>
+  <div align="left">
+    <div style="display: inline-block">
+      {{ form.lost_item.label }}:
+      {{ form.lost_item }}
     </div>
-    <p>
-        <div id="lost_item_info">
-            <!-- Lost item info updates here -->
-        </div>
-    </p>
-    <h3>Liked Gifts</h3>
-    <div align="left">
-        <div style="display: inline-block">
-            {{ form.character.label }}:
-            {{ form.character }}
-        </div>
+  </div>
+  <p>
+  <div id="lost_item_info">
+    <!-- Lost item info updates here -->
+  </div>
+  </p>
+  <h3>Liked Gifts</h3>
+  <div align="left">
+    <div style="display: inline-block">
+      {{ form.character.label }}:
+      {{ form.character }}
     </div>
-    <p>
-        <div id="liked_gift_info">
-            <!-- Liked gift info updates here -->
-        </div>
-    </p>
+  </div>
+  <p>
+  <div id="liked_gift_info">
+    <!-- Liked gift info updates here -->
+  </div>
+  </p>
 </form>
 <script src="{{ url_for('static', filename='js/item_helper.js') }}"></script>
 {% endblock %}

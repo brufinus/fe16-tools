@@ -1,37 +1,40 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-        <script src="{{ url_for('static', filename='js/toggle_theme.js') }}"></script>
-        {% if title %}
-        <title>{{ title }} - FE16 Tools</title>
-        {% else %}
-        <title>FE16 Tools</title>
-        {% endif %}
-    </head>
-    <body>
-        <div>FE16 Tools:
-            <a href="{{ url_for('main.index') }}">Home</a>
-            <a href="{{ url_for('tools.meal_finder') }}">Meal Finder</a>
-            <a href="{{ url_for('tools.tea_helper') }}">Tea Helper</a>
-            <a href="{{ url_for('tools.item_helper') }}">Item Helper</a>
-            <a href="{{ url_for('tools.seed_simulator') }}">Seed Simulator</a>
-            <a href="{{ url_for('tools.lecture_assistant') }}">Lecture Assistant</a>
-        </div>
-        <hr>
-        <button id="theme-toggle" onclick="toggleTheme()">Toggle Dark Mode</button>
-        <h1>{{ page_name }}</h1>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
-    </body>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <script src="{{ url_for('static', filename='js/toggle_theme.js') }}"></script>
+  {% if title %}
+  <title>{{ title }} - FE16 Tools</title>
+  {% else %}
+  <title>FE16 Tools</title>
+  {% endif %}
+</head>
+
+<body>
+  <div>FE16 Tools:
+    <a href="{{ url_for('main.index') }}">Home</a>
+    <a href="{{ url_for('tools.meal_finder') }}">Meal Finder</a>
+    <a href="{{ url_for('tools.tea_helper') }}">Tea Helper</a>
+    <a href="{{ url_for('tools.item_helper') }}">Item Helper</a>
+    <a href="{{ url_for('tools.seed_simulator') }}">Seed Simulator</a>
+    <a href="{{ url_for('tools.lecture_assistant') }}">Lecture Assistant</a>
+  </div>
+  <hr>
+  <button id="theme-toggle" onclick="toggleTheme()">Toggle Dark Mode</button>
+  <h1>{{ page_name }}</h1>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</body>
+
 </html>

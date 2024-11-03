@@ -1,69 +1,71 @@
 {% extends "base.html" %}
+
 {% block content %}
+
 <head>
-    <title>Item Helper Tool</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <title>Item Helper Tool</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <form action="" method="post" novalidate>
-    {{ form.hidden_tag() }}
-    <div align="left">
-        <div style="display: inline-block">
-            {{ form.seed1.label }}:
-            {{ form.seed1 }}
-        </div>
+  {{ form.hidden_tag() }}
+  <div align="left">
+    <div style="display: inline-block">
+      {{ form.seed1.label }}:
+      {{ form.seed1 }}
     </div>
-    <br>
-    <div align="left">
-        <div style="display: inline-block">
-            {{ form.seed2.label }}:
-            {{ form.seed2 }}
-        </div>
+  </div>
+  <br>
+  <div align="left">
+    <div style="display: inline-block">
+      {{ form.seed2.label }}:
+      {{ form.seed2 }}
     </div>
-    <br>
-    <div align="left">
-        <div style="display: inline-block">
-            {{ form.seed3.label }}:
-            {{ form.seed3 }}
-        </div>
+  </div>
+  <br>
+  <div align="left">
+    <div style="display: inline-block">
+      {{ form.seed3.label }}:
+      {{ form.seed3 }}
     </div>
-    <br>
-    <div align="left">
-        <div style="display: inline-block">
-            {{ form.seed4.label }}:
-            {{ form.seed4 }}
-        </div>
+  </div>
+  <br>
+  <div align="left">
+    <div style="display: inline-block">
+      {{ form.seed4.label }}:
+      {{ form.seed4 }}
     </div>
-    <br>
-    <div align="left">
-        <div style="display: inline-block">
-            {{ form.seed5.label }}:
-            {{ form.seed5 }}
-        </div>
+  </div>
+  <br>
+  <div align="left">
+    <div style="display: inline-block">
+      {{ form.seed5.label }}:
+      {{ form.seed5 }}
     </div>
-    <br>
-    <div align="left">
-        <div style="display: inline-block">
-            {{ form.cultivation.label }}:
-            {{ form.cultivation }}
-        </div>
+  </div>
+  <br>
+  <div align="left">
+    <div style="display: inline-block">
+      {{ form.cultivation.label }}:
+      {{ form.cultivation }}
     </div>
-    <br>
-    <div align="left">
-        <div style="display: inline-block">
-            {{ form.clear_all }}
-        </div>
+  </div>
+  <br>
+  <div align="left">
+    <div style="display: inline-block">
+      {{ form.clear_all }}
     </div>
-    <p>
-        <div id="info">
-            <!-- Info updates here -->
-        </div>
-    </p>
-    <p>
-        What do you do with these numbers?<br>
-        Read more about the Greenhouse at
-        <a href="https://serenesforest.net/three-houses/monastery/greenhouse/"
-           target="_blank" rel="noopener noreferrer">Serenes Forest.</a>
-    </p>
+  </div>
+  <p>
+  <div id="info">
+    <!-- Info updates here -->
+  </div>
+  </p>
+  <p>
+    What do you do with these numbers?<br>
+    Read more about the Greenhouse at
+    <a href="https://serenesforest.net/three-houses/monastery/greenhouse/" target="_blank"
+      rel="noopener noreferrer">Serenes Forest.</a>
+  </p>
 </form>
 <script src="{{ url_for('static', filename='js/seed_simulator.js') }}"></script>
 {% endblock %}

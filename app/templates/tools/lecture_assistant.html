@@ -1,25 +1,27 @@
 {% extends "base.html" %}
+
 {% block content %}
+
 <head>
-    <title>Item Helper Tool</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <title>Item Helper Tool</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <form action="" method="post" autocomplete="off" novalidate>
-    {{ form.hidden_tag() }}
-    <div align="left">
-        <div style="display: inline-block">
-            Start typing a question to update results.
-            <br>
-            {{ form.question_query.label }}
-            <br>
-            {{ form.question_query }}
-        </div>
+  {{ form.hidden_tag() }}
+  <div align="left">
+    <div style="display: inline-block">
+      Start typing a question to update results.
+      <br>
+      {{ form.question_query.label }}
+      <br>
+      {{ form.question_query }}
     </div>
-    <p>
-        <div id="info">
-            <!-- Info updates here -->
-        </div>
-    </p>
+  </div>
+  <p>
+  <div id="info">
+    <!-- Info updates here -->
+  </div>
+  </p>
 </form>
 <script src="{{ url_for('static', filename='js/lecture_assistant.js') }}"></script>
 {% endblock %}

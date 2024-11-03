@@ -1,28 +1,30 @@
 {% extends "base.html" %}
+
 {% block content %}
+
 <head>
-    <title>Tea Helper Tool</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <title>Tea Helper Tool</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <form action="" method="post" novalidate>
-    {{ form.hidden_tag() }}
-    <div align="left">
-        <div style="display: inline-block">
-            {{ form.character.label }}:
-            {{ form.character }}
-        </div>
+  {{ form.hidden_tag() }}
+  <div align="left">
+    <div style="display: inline-block">
+      {{ form.character.label }}:
+      {{ form.character }}
     </div>
-    <div id="tea_info">
-        <!-- Tea info updates here -->
-    </div>
-    <p><b>Interested topics:</b></p>
-    <div id="topic_info" class="topic-grid-container">
-        <!-- Topic info updates here -->
-    </div>
-    <p><b>Final topics:</b></p>
-    <div id="final_topic_info">
-        <!-- Final topic info updates here -->
-    </div>
+  </div>
+  <div id="tea_info">
+    <!-- Tea info updates here -->
+  </div>
+  <p><b>Interested topics:</b></p>
+  <div id="topic_info" class="topic-grid-container">
+    <!-- Topic info updates here -->
+  </div>
+  <p><b>Final topics:</b></p>
+  <div id="final_topic_info">
+    <!-- Final topic info updates here -->
+  </div>
 </form>
 <script src="{{ url_for('static', filename='js/tea_helper.js') }}"></script>
 {% endblock %}
